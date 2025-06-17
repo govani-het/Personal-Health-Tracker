@@ -1,0 +1,238 @@
+/* --- Google Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- CSS Reset & Base Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F9FAFB;
+    color: #333;
+    /* Changed for full-screen layout */
+    overflow: hidden; /* Prevents scrollbars on the body */
+}
+
+/* --- Main Container --- */
+.dashboard-container {
+    display: flex;
+    /* Changed for full-screen layout */
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+/* --- Sidebar Navigation --- */
+.sidebar {
+    width: 260px;
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    background-color: #111827; /* Dark background */
+    color: #D1D5DB; /* Light gray text */
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav ul {
+    list-style-type: none;
+    width: 100%;
+}
+
+.sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #D1D5DB;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-nav li a:hover {
+    background-color: #374151; /* Hover state */
+    color: #FFF;
+}
+
+.sidebar-nav li a.active {
+    background-color: #374151; /* Active state */
+    color: #FFF;
+}
+
+.sidebar-nav .icon {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    flex-grow: 1;
+    padding: 32px;
+    background-color: #F9FAFB;
+    /* Allow content to scroll if it overflows the viewport height */
+    overflow-y: auto;
+}
+
+/* --- Header --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.menu-button {
+    border: 1px solid #E5E7EB;
+    background: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* --- Summary Cards --- */
+.summary-cards {
+    display: grid;
+    /* Responsive grid columns */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.card {
+    padding: 24px;
+    border-radius: 16px;
+}
+
+.card .value {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.card .label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.card-heart { background-color: #E0F2FE; color: #0C4A6E; }
+.card-steps { background-color: #D1FADF; color: #065F46; }
+.card-calories { background-color: #D1FADF; color: #065F46; }
+.card-sleep { background-color: #EBE9FE; color: #4C1D95; }
+
+/* --- Main Dashboard Grid --- */
+.dashboard-grid {
+    display: grid;
+    /* Responsive grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+/* On larger screens, force 2fr 1fr layout */
+@media (min-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.grid-widget {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.widget-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 20px;
+}
+
+/* --- Activity Chart --- */
+.activity-chart-container {
+    position: relative;
+}
+
+.activity-chart-container svg {
+    width: 100%;
+    height: auto;
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #6B7280;
+    font-size: 12px;
+    margin-top: 8px;
+    padding: 0 10px;
+}
+
+.y-axis-labels {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #6B7280;
+    font-size: 12px;
+}
+
+.small-chart-container svg {
+    width: 100%;
+}
+
+/* --- Reminders & Medication --- */
+.reminders-list {
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.reminders-list li {
+    font-size: 16px;
+    color: #374151;
+    margin-bottom: 12px;
+}
+
+.reminders-list li::marker {
+    color: #374151;
+    font-size: 1.2em;
+}
+
+.medication-item {
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.medication-item .time {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.medication-item .name {
+    font-size: 16px;
+    color: #4B5563;
+    margin: 4px 0;
+}
+
+.medication-item .dose {
+    font-size: 14px;
+    color: #6B7280;
+}
