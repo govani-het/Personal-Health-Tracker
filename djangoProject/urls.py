@@ -21,7 +21,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 #   path("admin/", admin.site.urls),
-    path('', include('Personal_Health_Tracker.urls')),
+    path('user/', include('Personal_Health_Tracker.user.urls')),
+    path('exercise/', include('Personal_Health_Tracker.exercise.urls')),
+    path('nutrition/', include('Personal_Health_Tracker.nutrition.urls')),
+    path('reminder/', include('Personal_Health_Tracker.reminder.urls')),
+    path('suggestion/', include('Personal_Health_Tracker.suggestion.urls')),
+
 ]
 
 if settings.DEBUG:

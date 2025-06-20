@@ -1,0 +1,142 @@
+/* General Setup */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa; /* Light grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Left Column: Quote & Image Section */
+.quote-section {
+    flex: 1;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+    position: relative; /* For the overlay */
+
+    /* Fitness background image */
+    background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+}
+/* Gradient overlay for text readability */
+.quote-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(22, 160, 133, 0.85) 0%, rgba(46, 204, 113, 0.85) 100%);
+    z-index: 1;
+}
+.quote-wrapper {
+    position: relative;
+    z-index: 2;
+}
+.quote-wrapper h2 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+.quote-wrapper p {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+/* Right Column: Form Section */
+.form-section { flex: 1.5; padding: 50px; }
+.form-wrapper h3 { font-size: 1.8rem; font-weight: 600; color: #343a40; margin-bottom: 8px; }
+.form-wrapper p { color: #6c757d; margin-bottom: 30px; }
+
+/* Form Grid & Input Styling */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.input-group { margin-bottom: 20px; }
+.input-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #495057; }
+.input-group input, .select-wrapper select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    background-color: #f1f3f5;
+    font-size: 1rem; color: #343a40;
+    transition: all 0.2s ease-in-out;
+}
+.input-group input:focus, .select-wrapper select:focus {
+    outline: none;
+    border-color: #16a085;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.2);
+}
+
+/* --- ENHANCED Radio Buttons --- */
+.radio-group { display: flex; gap: 15px; }
+.radio-label { flex: 1; cursor: pointer; }
+.radio-label input { display: none; } /* Hide the default radio button */
+.radio-label span {
+    display: block;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+.radio-label span:hover { border-color: #1abc9c; }
+/* This is the key part: when the hidden input is checked, style the span next to it */
+.radio-label input:checked + span {
+    background-color: #16a085;
+    border-color: #16a085;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Custom Select Dropdown */
+.select-wrapper { position: relative; }
+.select-wrapper::after { content: '▼'; font-size: 0.8rem; color: #adb5bd; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.select-wrapper select { appearance: none; -webkit-appearance: none; }
+
+/* Action Button */
+.action-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #16a085 0%, #2ecc71 100%);
+    color: #fff;
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .container { flex-direction: column; }
+    .quote-section { border-radius: 20px 20px 0 0; min-height: 250px; }
+    .form-section { border-radius: 0 0 20px 20px; }
+}
+@media (max-width: 576px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-section { padding: 30px; }
+}

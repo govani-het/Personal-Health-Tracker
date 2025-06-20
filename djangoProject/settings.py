@@ -5,8 +5,8 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TEMPLATE_URL = os.path.join(BASE_DIR, 'templates')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+TEMPLATE_URL = os.path.join(BASE_DIR /'Personal_Health_Tracker/templates')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "Personal_Health_Tracker/static"),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
@@ -25,7 +25,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'Personal_Health_Tracker.apps.PersonalHealthTrackerConfig',
+    "Personal_Health_Tracker.user",
+    "Personal_Health_Tracker.nutrition",
+    "Personal_Health_Tracker.exercise",
+    "Personal_Health_Tracker.reminder",
+    "Personal_Health_Tracker.suggestion",
 ]
 
 MIDDLEWARE = [

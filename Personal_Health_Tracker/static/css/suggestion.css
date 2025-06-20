@@ -1,0 +1,59 @@
+/* --- CSS VARIABLES & GENERAL SETUP (Same as before) --- */
+:root {
+    --sidebar-bg: #1a202c; --main-bg: #f7fafc; --card-bg: #ffffff;
+    --text-primary: #2d3748; --text-secondary: #718096;
+    --accent-blue: #4299e1; --font-family: 'Poppins', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-family); background-color: var(--main-bg); }
+.app-container { display: flex; min-height: 100vh; }
+
+/* --- SIDEBAR & HEADER (Reused) --- */
+.sidebar { width: 260px; background-color: var(--sidebar-bg); color: #a0aec0; display: flex; flex-direction: column; padding: 25px; flex-shrink: 0; }
+.sidebar-logo { display: flex; align-items: center; gap: 10px; color: #fff; font-size: 1.2rem; font-weight: 600; text-decoration: none; margin-bottom: 40px; }
+.sidebar-nav { list-style: none; flex-grow: 1; }
+.sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: inherit; font-weight: 500; transition: all 0.2s; }
+.sidebar-nav a:hover { background-color: #2d3748; color: #fff; }
+.sidebar-nav a.active { background: linear-gradient(90deg, #3b82f6, #8b5cf6); color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+.sidebar-nav svg { width: 20px; height: 20px; }
+.sidebar-footer { display: flex; flex-direction: column; gap: 5px; border-top: 1px solid #2d3748; padding-top: 15px; }
+.sidebar-footer a { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; text-decoration: none; color: inherit; font-weight: 500; transition: all 0.2s; }
+.sidebar-footer a:hover { background-color: #2d3748; color: #fff; }
+.main-content { flex-grow: 1; padding: 30px; overflow-y: auto; }
+.main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.header-welcome h2 { font-size: 1.8rem; color: var(--text-primary); }
+.header-welcome p { color: var(--text-secondary); }
+.card { background-color: var(--card-bg); border-radius: 15px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05); }
+
+/* --- VIEW TOGGLE BUTTONS --- */
+.view-toggle { display: flex; gap: 10px; background-color: #e2e8f0; border-radius: 10px; padding: 5px; margin-bottom: 30px; }
+.toggle-btn { flex: 1; padding: 10px; border: none; background-color: transparent; border-radius: 8px; font-size: 1rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; }
+.toggle-btn.active { background-color: var(--card-bg); color: var(--text-primary); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+
+/* --- CONTENT SECTIONS & ANIMATION --- */
+.content-section { display: none; animation: fadeIn 0.5s ease-in-out; }
+.content-section.visible { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- MEAL SUGGESTIONS --- */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+.meal-card { overflow: hidden; display: flex; flex-direction: column; }
+.meal-card img { width: 100%; height: 200px; object-fit: cover; }
+.meal-card .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.meal-card h3 { font-size: 1.2rem; margin-bottom: 5px; }
+.meal-card p { color: var(--text-secondary); margin-bottom: 15px; flex-grow: 1; }
+.meal-card a { display: inline-block; text-decoration: none; padding: 10px 15px; background-color: var(--accent-blue); color: #fff; border-radius: 8px; text-align: center; font-weight: 500; transition: background-color 0.2s; }
+.meal-card a:hover { background-color: #2b6cb0; }
+
+/* --- EXERCISE SUGGESTIONS --- */
+.exercise-list { display: flex; flex-direction: column; gap: 20px; }
+.exercise-item { display: flex; align-items: center; padding: 20px; gap: 20px; }
+.exercise-visual { flex-shrink: 0; width: 100px; height: 100px; background-color: #e2e8f0; border-radius: 12px; display: flex; justify-content: center; align-items: center; }
+.exercise-visual svg { width: 32px; height: 32px; color: #a0aec0; }
+.exercise-details h3 { font-size: 1.2rem; margin-bottom: 5px; }
+.muscle-tag { display: inline-block; background-color: #edf2f7; color: #4a5568; padding: 4px 10px; border-radius: 99px; font-size: 0.8rem; font-weight: 600; margin-bottom: 10px; }
+.exercise-details p { color: var(--text-secondary); line-height: 1.6; }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) { .sidebar { position: fixed; transform: translateX(-100%); transition: transform 0.3s; z-index: 100; } .main-content { padding: 20px; } }
+@media (max-width: 480px) { .exercise-item { flex-direction: column; align-items: flex-start; } }

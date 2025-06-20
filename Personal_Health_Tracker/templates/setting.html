@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/setting.css' %}">
+    <script src="{% static 'js/setting.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthHub: Account Settings</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (Same as before, with 'Settings' active) -->
+        {% include 'sidebar.html' %}
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-welcome">
+                    <h2>Account Settings</h2>
+                    <p>Manage your profile information and password.</p>
+                </div>
+            </header>
+
+            <section class="settings-grid">
+                <!-- Profile Information Form -->
+                <div class="card">
+                    <h4>Profile Information</h4>
+                    <form class="profile-form">
+                        <div class="form-grid">
+                            <div class="input-group"><label for="height">Height (cm)</label><input type="number" id="height" value="180"></div>
+                            <div class="input-group"><label for="goal-weight">Goal Weight (kg)</label><input type="number" id="goal-weight" value="70"></div>
+                            <div class="input-group"><label for="dob">Date of Birth</label><input type="date" id="dob" value="1995-08-15"></div>
+                        </div>
+                        <div class="input-group">
+                            <label>Gender</label>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="gender" value="male" checked><span>Male</span></label>
+                                <label class="radio-label"><input type="radio" name="gender" value="female"><span>Female</span></label>
+                                <label class="radio-label"><input type="radio" name="gender" value="other"><span>Other</span></label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="activity-level">Activity Level</label>
+                            <div class="select-wrapper"><select id="activity-level"><option>Sedentary</option><option selected>Lightly Active</option><option>Moderately Active</option><option>Very Active</option></select></div>
+                        </div>
+                        <button type="submit" class="action-btn">Update Profile</button>
+                    </form>
+                </div>
+
+                <!-- Change Password Section with Trigger Button -->
+                <div class="card">
+                    <h4>Change Password</h4>
+                    <p class="card-description">For security, it's a good practice to use a strong, unique password.</p>
+                    <button class="action-btn secondary-btn" id="open-password-modal-btn">Change Password</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- The Modal (Pop-up) for Changing Password -->
+    <div id="password-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" id="close-modal-btn">×</button>
+            <h2>Change Your Password</h2>
+            <form>
+                <div class="input-group"><label for="current-password">Current Password</label><input type="password" id="current-password" placeholder="Enter your current password"></div>
+                <div class="input-group"><label for="new-password">New Password</label><input type="password" id="new-password" placeholder="Enter a new password"></div>
+                <div class="input-group"><label for="confirm-password">Confirm New Password</label><input type="password" id="confirm-password" placeholder="Confirm your new password"></div>
+                <button type="submit" class="action-btn update-btn">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/suggestion.css' %}">
+    <script src="{% static 'js/suggestion.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthHub: Suggestions</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (with 'Workouts' active) -->
+        {% include 'sidebar.html' %}
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-welcome">
+                    <h2>Discover New Ideas</h2>
+                    <p>Find new meals and exercises to spice up your routine.</p>
+                </div>
+            </header>
+
+            <!-- Toggle Buttons -->
+            <div class="view-toggle">
+                <button id="meal-btn" class="toggle-btn">Meal Suggestions</button>
+                <button id="exercise-btn" class="toggle-btn">Exercise Suggestions</button>
+            </div>
+
+            <!-- Meal Suggestions Content -->
+            <div id="meals-content" class="content-section">
+                <div class="card-grid">
+                    <div class="card meal-card"><img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&q=80"><div class="card-body"><h3>Grilled Chicken Salad</h3><p>350 Calories</p><a href="#">View Recipe</a></div></div>
+                    <div class="card meal-card"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80"><div class="card-body"><h3>Quinoa & Veggie Bowl</h3><p>450 Calories</p><a href="#">View Recipe</a></div></div>
+                    <div class="card meal-card"><img src="https://images.unsplash.com/photo-1484723051597-639827d096e1?auto=format&fit=crop&q=80"><div class="card-body"><h3>Avocado Toast</h3><p>280 Calories</p><a href="#">View Recipe</a></div></div>
+                </div>
+            </div>
+
+            <!-- Exercise Suggestions Content -->
+            <div id="exercises-content" class="content-section">
+                <div class="exercise-list">
+                    <div class="card exercise-item"><div class="exercise-visual"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></div><div class="exercise-details"><h3>Push Ups</h3><span class="muscle-tag">Chest, Shoulders, Triceps</span><p>Start in a plank position. Lower your body until your chest nearly touches the floor, then push back up.</p></div></div>
+                    <div class="card exercise-item"><div class="exercise-visual"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></div><div class="exercise-details"><h3>Squats</h3><span class="muscle-tag">Quads, Glutes</span><p>Stand with feet shoulder-width apart. Lower your hips as if sitting in a chair, keeping your chest up.</p></div></div>
+                    <div class="card exercise-item"><div class="exercise-visual"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></div><div class="exercise-details"><h3>Plank</h3><span class="muscle-tag">Core</span><p>Hold a push-up position with your body in a straight line from head to heels. Engage your core.</p></div></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+</body>
+</html>

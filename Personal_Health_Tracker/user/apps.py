@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PersonalHealthTrackerConfig(AppConfig):
+class UserConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "Personal_Health_Tracker"
+    name = "Personal_Health_Tracker.user"
