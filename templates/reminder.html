@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminders - HealthHub</title>
+    
+    {% load static %} <!-- Add this if you haven't already in a base template -->
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Link to your external CSS file -->
+    <link rel="stylesheet" href="{% static 'css/reminder.css' %}">
+
+</head>
+<body>
+    <div class="app-container">
+        {% include 'sidebar.html' %}
+        <main class="main-content">
+            
+            <header>
+                <h1>Reminders</h1>
+                <p>Stay on top of your health goals with timely reminders.</p>
+            </header>
+    
+            <div class="reminder-grid">
+                <!-- Add Reminder Form Card -->
+                <div class="card add-reminder-card">
+                    <h2>Add New Reminder</h2>
+                    <form id="add-reminder-form">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" name="title" class="form-input" placeholder="e.g., Morning run" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description (Optional)</label>
+                            <input type="text" id="description" name="description" class="form-input" placeholder="e.g., 30 minutes">
+                        </div>
+                        <div class="form-group">
+                            <label for="reminder_time">Date & Time</label>
+                            <input type="datetime-local" id="reminder_time" name="reminder_time" class="form-input" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Reminder</button>
+                    </form>
+                </div>
+    
+                <!-- Upcoming Reminders List Card -->
+                <div class="card reminder-list-card">
+                    <h2>Your Reminders</h2>
+                    <ul id="reminders-list">
+                        <!-- Demo content, will be replaced by JS -->
+                        <li id="empty-state" style="text-align: center; color: var(--text-secondary); padding: 2rem 0;">
+                            You have no upcoming reminders.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    
+        <!-- Edit Modal -->
+        <div class="modal-overlay" id="edit-modal">
+        <div class="card modal-content">
+            <h2>Edit Reminder</h2>
+            <form id="edit-form">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" name="title" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <input type="text" id="edit-description" name="description" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-time">Date & Time</label>
+                    <input type="datetime-local" id="edit-time" name="reminder_time" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    </div>
+    <!-- Link to your external JavaScript file -->
+    <script src="{% static 'js/reminder.js' %}"></script>
+</body>
+</html>

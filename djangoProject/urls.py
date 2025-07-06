@@ -20,12 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-#   path("admin/", admin.site.urls),
-    path('user/', include('Personal_Health_Tracker.user.urls')),
-    path('exercise/', include('Personal_Health_Tracker.exercise.urls')),
-    path('nutrition/', include('Personal_Health_Tracker.nutrition.urls')),
-    path('reminder/', include('Personal_Health_Tracker.reminder.urls')),
-    path('suggestion/', include('Personal_Health_Tracker.suggestion.urls')),
+    path('', include('user.urls')),
+    path('user/', include('user.urls')),
+    path('exercise/', include('exercise.urls')),
+    path('nutrition/', include('nutrition.urls')),
+    path('reminder/', include('reminder.urls')),
+    path('suggestion/', include('suggestion.urls'))
 
 ]
 

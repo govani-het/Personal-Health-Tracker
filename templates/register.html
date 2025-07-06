@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Fitness Account</title>
+    <link rel="stylesheet" href="{% static 'css/register_page.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        function validateForm() {
+
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+
+            const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return false;
+            }
+
+            if (!specialCharRegex.test(password)) {
+                alert('Password must contain at least one special character (e.g., !, @, #, $).');
+                return false;
+            }
+
+            if (password !== confirm_password) {
+                alert('Your passwords do not match.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-wrapper">
+                <h1>Create Account</h1>
+                <p>Join our fitness community and start your journey!</p>
+
+                <form method="POST" onsubmit="return validateForm();" action="{% url 'user:create_user' %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="off">
+                            {% if messages %}
+                                <div class="messages">
+                                    {% for message in messages %}
+                                        
+                                        <div class="alert alert-{{ message.tags }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                                            
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Choose a strong password" required autocomplete="new-password">
+                    </div>
+                    <div class="input-group">
+                        
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="create-btn">Create Account</button>
+                </form>
+                <div class="login-link">
+                    <p>Already have an account? <a href="/">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="image-section">
+            <img src="{% static 'image/login_page.png' %}" alt="A woman stretching before a workout.">
+        </div>
+    </div>
+</body>
+</html>
