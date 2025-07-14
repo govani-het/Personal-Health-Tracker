@@ -18,7 +18,15 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="page-header">
-                <div class="date-navigator"><button class="nav-arrow"><</button><input type="date" id="current-date"><button class="nav-arrow">></button></div>
+                <div class="date-navigator">
+                    <button class="nav-arrow">
+                        <
+                    </button>
+                    <input type="date" id="current-date">
+                    <button class="nav-arrow">
+                        >
+                    </button>
+                </div>
                 <div class="header-actions"><button class="action-btn" id="add-exercise-btn"><span>+</span> Add Exercise</button></div>
             </header>
 
@@ -29,8 +37,50 @@
             </section>
 
             <section class="exercise-log">
-                <div class="card exercise-entry"><div><h3>Running</h3><p>Cardio | High Intensity</p></div><div class="entry-stats"><span>30 min</span><span>5 km</span><span>300 kcal</span></div><div class="item-actions"><button class="icon-btn" title="Edit"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.4l8.6-8.6l-1.4-1.4L5 17.6V19zm16-7.4l-1.4-1.4l-2.6 2.6l1.4 1.4l2.6-2.6z"/></svg></button><button class="icon-btn" title="Delete"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/></svg></button></div></div>
-                <div class="card exercise-entry"><div><h3>Bench Press</h3><p>Weight Lifting | Chest</p></div><div class="entry-stats"><span>80 kg</span><span>3 sets</span><span>8 reps</span></div><div class="item-actions"><button class="icon-btn" title="Edit"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.4l8.6-8.6l-1.4-1.4L5 17.6V19zm16-7.4l-1.4-1.4l-2.6 2.6l1.4 1.4l2.6-2.6z"/></svg></button><button class="icon-btn" title="Delete"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/></svg></button></div></div>
+                <div class="card exercise-entry">
+                    <div><h3>Running</h3>
+                        <p>Cardio | High Intensity</p>
+                    </div><div class="entry-stats">
+                    <span>30 min</span>
+                    <span>5 km</span>
+                    <span>300 kcal</span>
+                </div>
+                    <div class="item-actions">
+                        <button class="icon-btn" title="Edit">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M5 19h1.4l8.6-8.6l-1.4-1.4L5 17.6V19zm16-7.4l-1.4-1.4l-2.6 2.6l1.4 1.4l2.6-2.6z"/>
+                            </svg>
+                        </button>
+                        <button class="icon-btn" title="Delete">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card exercise-entry">
+                    <div><h3>Bench Press</h3>
+                        <p>Weight Lifting | Chest</p>
+                    </div>
+                    <div class="entry-stats">
+                        <span>80 kg</span>
+                        <span>3 sets</span>
+                        <span>8 reps</span>
+                    </div>
+                    <div class="item-actions">
+                        <button class="icon-btn" title="Edit">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M5 19h1.4l8.6-8.6l-1.4-1.4L5 17.6V19zm16-7.4l-1.4-1.4l-2.6 2.6l1.4 1.4l2.6-2.6z"/>
+                            </svg>
+                        </button>
+                        <button class="icon-btn" title="Delete">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
@@ -40,22 +90,67 @@
         <div class="modal-content">
             <button class="close-btn" id="close-modal-btn">×</button>
             <h2>Log Your Exercise</h2>
-            <form>
-                <div class="input-group"><label for="exercise-type">Exercise Type</label><div class="select-wrapper"><select id="exercise-type"><option value="">Select a type...</option><option value="Cardio">Cardio</option><option value="Weight Lifting">Weight Lifting</option></select></div></div>
-                <div class="input-group"><label for="exercise-name">Exercise Name</label><input type="text" id="exercise-name" placeholder="e.g., Running, Bench Press"></div>
+            <form action="{% url 'exercise:add_workout' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="exercise-type" >Exercise Type</label>
+                    <div class="select-wrapper" >
+                        <select id="exercise-type" name="exercise_type">
+                            <option value="">Select a type...</option>
+                            <option value="Cardio">Cardio</option>
+                            <option value="Weight Lifting">Weight Lifting</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="exercise-name">Exercise Name</label>
+                    <input type="text" id="exercise-name" placeholder="e.g., Running, Bench Press" name="exercise_name">
+                </div>
 
                 <!-- Dynamic Fields for Cardio -->
                 <div id="cardio-fields" class="dynamic-fields">
-                    <div class="form-row"><div class="input-group"><label>Duration (minutes)</label><input type="number" placeholder="30"></div><div class="input-group"><label>Distance (km)</label><input type="number" step="0.1" placeholder="5"></div></div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Duration (minutes)</label>
+                            <input type="number" placeholder="30" name="duration">
+                        </div><div class="input-group">
+                        <label>Distance (km)</label>
+                        <input type="number" step="0.1" placeholder="5" name="distance">
+                    </div>
+                    </div>
                 </div>
 
                 <!-- Dynamic Fields for Weight Lifting -->
                 <div id="weight-lifting-fields" class="dynamic-fields">
-                    <div class="form-row"><div class="input-group"><label>Weight (kg)</label><input type="number" step="0.5" placeholder="80"></div><div class="input-group"><label>Sets</label><input type="number" placeholder="3"></div><div class="input-group"><label>Reps</label><input type="number" placeholder="8"></div></div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" step="0.5" placeholder="80" name="weight">
+                        </div>
+                        <div class="input-group">
+                            <label>Sets</label>
+                            <input type="number" placeholder="3" name="sets">
+                        </div>
+                        <div class="input-group">
+                            <label>Reps</label>
+                            <input type="number" placeholder="8" name="reps">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-row"><div class="input-group"><label>Intensity Level</label><div class="select-wrapper"><select><option>Low</option><option>Medium</option><option>High</option></select></div></div><div class="input-group"><label>Calories Burned</label><input type="number" placeholder="300"></div></div>
-                <div class="input-group"><label>Notes</label><textarea placeholder="Felt strong today..."></textarea></div>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Intensity Level</label>
+                        <div class="select-wrapper">
+                            <select name="intensity">
+                                <option>Low</option>
+                                <option>Medium</option>
+                                <option>High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+         
                 <button type="submit" class="action-btn">Save Exercise</button>
             </form>
         </div>
@@ -63,4 +158,5 @@
 
 
 </body>
+
 </html>

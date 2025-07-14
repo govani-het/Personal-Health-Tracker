@@ -1,10 +1,10 @@
 <nav class="sidebar">
-    <a href="{% url 'user:index' %}?user_id={{ request.session.user_id }}" class="sidebar-logo">
+    <a href="{% url 'user:index' %}" class="sidebar-logo">
         <svg width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4l1.41-1.41L11 15.17l6.59-6.59L19 10l-8 8z"/></svg>
         <span>HealthHub</span>
     </a>
     <ul class="sidebar-nav">
-        <li><a href="{% url 'user:index'  %}?user_id={{ request.session.user_id }}"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h3M18 12h3M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg> Dashboard</a></li>
+        <li><a href="{% url 'user:index'  %}"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h3M18 12h3M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg> Dashboard</a></li>
         <li><a href="{% url 'nutrition:load_nutrition_page' %}"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v18M3 12h18"/></svg> Nutrition</a></li>
         <li><a href="{% url 'exercise:load_workout_page' %}"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V3m0 18v-3M5.6 8.5L3.5 6.4M18.4 17.6l2.1 2.1M8.5 5.6L6.4 3.5M17.6 18.4l2.1 2.1"/></svg> Workouts</a></li>
         <li><a href="{% url 'user:progress_page' %}"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18"/></svg> Progress</a></li>

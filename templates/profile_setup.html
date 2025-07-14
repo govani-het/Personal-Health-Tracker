@@ -26,7 +26,7 @@
             <div class="form-wrapper">
                 <h3>Complete Your Profile</h3>
                 <p>This info helps us create a personalized plan for you.</p>
-                <form action="/profile_setup" method="POST">
+                <form action="{% url 'user:profile_setup' %}" method="POST">
                     {% csrf_token %}
                     <div class="input-group">
                         <div class="input-group">

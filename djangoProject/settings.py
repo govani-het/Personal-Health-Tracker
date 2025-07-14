@@ -4,27 +4,26 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# BASE_DIR is correct. It points to the project root (where manage.py is).
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- NO LONGER NEEDED ---
-# TEMPLATE_URL = ... (We will define this directly below)
 
-# --- CORRECTED STATIC FILES PATH ---
 STATICFILES_DIRS = [
-    BASE_DIR / 'static', # Looks for a folder named 'static' in the project root.
+    BASE_DIR / 'static',
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-# --- The rest of your settings are mostly fine ---
+
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-# Application definition
+NUTRITIONIX_APP_ID = os.getenv('NUTRITIONIX_APP_ID')
+NUTRITIONIX_API_KEY = os.getenv('NUTRITIONIX_API_KEY')
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -51,13 +50,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "djangoProject.urls"
 
-# --- CORRECTED TEMPLATES CONFIGURATION ---
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # This tells Django to look for a folder named 'templates' in the project root.
+
         'DIRS': [BASE_DIR / 'templates'], 
-        'APP_DIRS': True, # This also lets Django find templates inside each app's 'templates' folder.
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -73,15 +72,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "djangoProject.wsgi.application"
 
-# ... (Your DATABASES, AUTH_PASSWORD_VALIDATORS, etc. remain the same) ...
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'health_tracker_db',
-        'USER': 'health_tracker_user',
-        'PASSWORD': 'Het2209#',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 AUTH_PASSWORD_VALIDATORS = [

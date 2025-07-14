@@ -30,4 +30,13 @@ document.addEventListener("DOMContentLoaded", function() {
             if (event.target === modal) closeModal();
         });
     }
+
+
 });
+
+function update_data(){
+    const date = document.getElementById('current-date').value
+
+
+}
+

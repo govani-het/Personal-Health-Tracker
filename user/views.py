@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from . import services
 from .models import ProfileSetUp
 from django.contrib import messages
+
 
 def login(request):
     return render(request, 'login.html')
@@ -10,17 +11,21 @@ def login(request):
 def register(request):
     return render(request, 'register.html')
 
+
 def index(request):
-    user_id = request.GET.get('user_id')
-    print(user_id)
+    user_id = request.session.get('user_id')
+
     dashboard = services.dashboard(user_id)
-    return render(request, 'index.html',context={'dashboard':dashboard})
+    return render(request, 'index.html', context={'dashboard': dashboard})
+
 
 def load_progress_page(request):
-    return render(request,'progress_page.html')
+    return render(request, 'progress_page.html')
+
 
 def load_setting_page(request):
-    return render(request,'setting.html')
+    return render(request, 'setting.html')
+
 
 def create_user(request):
     if request.method == "POST":
@@ -36,6 +41,7 @@ def create_user(request):
     else:
         return redirect('/register')
 
+
 def authenticate_user(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -46,7 +52,7 @@ def authenticate_user(request):
             request.session['user_id'] = user.user_id
 
             if ProfileSetUp.objects.filter(user_id=user.user_id).exists():
-                return redirect('/index?user_id='+str(user.user_id))
+                return redirect('/index?user_id=' + str(user.user_id))
             else:
                 return render(request, 'profile_setup.html')
         except services.exception.AuthenticationError as e:
@@ -56,8 +62,8 @@ def authenticate_user(request):
             messages.error(request, str(e))
             return redirect('/')
 
-def user_profile_setup(request):
 
+def user_profile_setup(request):
     if request.method == 'POST':
         user_id = request.session['user_id']
         username = request.POST['username']
@@ -70,6 +76,6 @@ def user_profile_setup(request):
 
         try:
             services.profile_setup(user_id, username, height, weight, goal, dob, gender, activity_level)
-            return render(request, 'index.html')
+            return redirect(request, 'user:index')
         except services.exception.ProfileSetUpAlreadyExists as e:
             return render(request, 'index.html')

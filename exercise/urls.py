@@ -7,5 +7,5 @@ app_name = 'exercise'
 urlpatterns = [
 
     path('load_workout_page', views.load_workout_page,name='load_workout_page'),
-
+    path('add_workout', views.add_workout,name='add_workout'),
 ]
