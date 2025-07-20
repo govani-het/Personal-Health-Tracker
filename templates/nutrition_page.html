@@ -11,173 +11,211 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Sidebar (with 'Nutrition' active) -->
-        {% include 'sidebar.html' %}
+<div class="app-container">
+    <!-- Sidebar (with 'Nutrition' active) -->
+    {% include 'sidebar.html' %}
 
-        <!-- Main Content -->
-        <main class="main-content">
+    <!-- Main Content -->
+    <main class="main-content">
         {% csrf_token %}
-            <header class="page-header">
-                <div class="date-navigator">
-                    <input type="date" onblur="update_data()" name="date" id="current-date">
-                </div>
-                <div class="header-actions">
-                    <button class="action-btn" id="add-meal-btn"><span>+</span> Add Meal Entry</button>
-                    <button class="icon-btn" title="Export Logs"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12v-4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4m-6 6l-3-3m0 0l3-3m-3 3h12"/></svg></button>
-                </div>
-            </header>
+        <header class="page-header">
+            <div class="date-navigator">
+                <input type="date" onblur="update_data()" name="date" id="current-date">
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" id="add-meal-btn"><span>+</span> Add Meal Entry</button>
+                <button class="icon-btn" title="Export Logs">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 12v-4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4m-6 6l-3-3m0 0l3-3m-3 3h12"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
 
-            <section class="daily-summary">
-                <div class="summary-card calories"><div class="progress-ring" style="--p:{{ total_nutrition.0 }};--c:#ff9f43;"></div><div class="summary-text"><h4>{{ count_nutrition.0 }}/2000</h4><p>Calories (kcal)</p></div></div>
-                <div class="summary-card protein"><div class="progress-ring" style="--p:{{ total_nutrition.1 }};--c:#3b82f6;"></div><div class="summary-text"><h4>{{ count_nutrition.1 }}/150g</h4><p>Protein</p></div></div>
-                <div class="summary-card carbs"><div class="progress-ring" style="--p:{{ total_nutrition.2 }};--c:#10b981;"></div><div class="summary-text"><h4>{{ count_nutrition.2 }}/250g</h4><p>Carbs</p></div></div>
-                <div class="summary-card fats"><div class="progress-ring" style="--p:{{ total_nutrition.3 }};--c:#8b5cf6;"></div><div class="summary-text"><h4>{{ count_nutrition.3 }}/70g</h4><p>Fats</p></div></div>
-            </section>
+        <section class="daily-summary">
+            <div class="summary-card calories">
+                <div class="progress-ring" style="--p:{{ total_nutrition.0 }};--c:#ff9f43;"></div>
+                <div class="summary-text"><h4>{{ count_nutrition.0|floatformat:2 }}/2000</h4>
+                    <p>Calories (kcal)</p></div>
+            </div>
+            <div class="summary-card protein">
+                <div class="progress-ring" style="--p:{{ total_nutrition.1 }};--c:#3b82f6;"></div>
+                <div class="summary-text"><h4>{{ count_nutrition.1|floatformat:2 }}/150g</h4>
+                    <p>Protein</p></div>
+            </div>
+            <div class="summary-card carbs">
+                <div class="progress-ring" style="--p:{{ total_nutrition.2 }};--c:#10b981;"></div>
+                <div class="summary-text"><h4>{{ count_nutrition.2|floatformat:2 }}/250g</h4>
+                    <p>Carbs</p></div>
+            </div>
+            <div class="summary-card fats">
+                <div class="progress-ring" style="--p:{{ total_nutrition.3 }};--c:#8b5cf6;"></div>
+                <div class="summary-text"><h4>{{ count_nutrition.3|floatformat:2 }}/70g</h4>
+                    <p>Fats</p></div>
+            </div>
+        </section>
 
-            <section class="meal-log">
-                {% if nutrition_service %}
+        <section class="meal-log">
+            {% if nutrition_service %}
+                <div class="card meal-group">
+                    <h4>Breakfast</h4>
                     {% for data in nutrition_service %}
                         {% if data.meal_type == 'Breakfast' %}
-                            <div class="card meal-group">
-                                <h4>Breakfast</h4>
-                        
-                                <div class="meal-item">
-                            <div>
-                                <h5>{{ data.food_name }}</h5>
-                                <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
-                            </div><div class="meal-macros">
-                            <span title="Protein">P: {{ data.protein }}g</span>
-                            <span title="Carbs">C: {{ data.carbs }}g</span>
-                            <span title="Fats">F: {{ data.fats }}g</span>
-                        </div>
-                            <div class="item-actions">
-                                
-                                <a class="icon-btn" title="Delete" href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
-                                    <svg viewBox="0 0 24 24">
-                                        <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                    </svg>
-                                </a>
+                            <div class="meal-item">
+                                <div>
+                                    <h5>{{ data.food_name }}</h5>
+                                    <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
+                                </div>
+                                <div class="meal-macros">
+                                    <span title="Protein">P: {{ data.protein }}g</span>
+                                    <span title="Carbs">C: {{ data.carbs }}g</span>
+                                    <span title="Fats">F: {{ data.fats }}g</span>
+                                </div>
+                                <div class="item-actions">
+
+                                    <a class="icon-btn" title="Delete"
+                                       href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
+                                        <svg viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
-                            </div>
-                        </div>    
+
                         {% endif %}
                     {% endfor %}
-                    
+
+                </div>
+
+                <div class="card meal-group">
+                    <h4>Lunch</h4>
                     {% for data in nutrition_service %}
-                            {% if data.meal_type == 'Lunch' %}
-                            <div class="card meal-group">
-                                <h4>Lunch</h4>
-                        
-                                <div class="meal-item">
-                            <div>
-                                <h5>{{ data.food_name }}</h5>
-                                <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
-                            </div><div class="meal-macros">
-                            <span title="Protein">P: {{ data.protein }}g</span>
-                            <span title="Carbs">C: {{ data.carbs }}g</span>
-                            <span title="Fats">F: {{ data.fats }}g</span>
-                        </div>
-                            <div class="item-actions">
-                                
-                                <a class="icon-btn" title="Delete" href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
-                                    <svg viewBox="0 0 24 24">
-                                        <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-                    
-                {% for data in nutrition_service %}
-                    {% if data.meal_type == 'Snack' %}                    
-                        <div class="card meal-group">
-                            <h4>Snack</h4>
-                                <div class="meal-item">
-                            <div>
-                                <h5>{{ data.food_name }}</h5>
-                                <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
-                            </div><div class="meal-macros">
-                            <span title="Protein">P: {{ data.protein }}g</span>
-                            <span title="Carbs">C: {{ data.carbs }}g</span>
-                            <span title="Fats">F: {{ data.fats }}g</span>
-                        </div>
-                            <div class="item-actions">
-                                
-                                <a class="icon-btn" title="Delete" href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
-                                    <svg viewBox="0 0 24 24">
-                                        <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-                    
-                 {% for data in nutrition_service %}
-                    {% if data.meal_type == 'Dinner' %}                   
-                    <div class="card meal-group">
-                        <h4>Dinner</h4>
-                                <div class="meal-item">
-                            <div>
-                                <h5>{{ data.food_name }}</h5>
-                                <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
-                            </div><div class="meal-macros">
-                            <span title="Protein">P: {{ data.protein }}g</span>
-                            <span title="Carbs">C: {{ data.carbs }}g</span>
-                            <span title="Fats">F: {{ data.fats }}g</span>
-                        </div>
-                            <div class="item-actions">
-                                <a class="icon-btn" title="Delete" href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
-                                    <svg viewBox="0 0 24 24">
-                                        <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                    </svg>
-                                </a>j
-                            </div>
-                        </div>
-                        </div>
-                            {% endif %}
-                        {% endfor %}
+                        {% if data.meal_type == 'Lunch' %}
+                            <div class="meal-item">
+                                <div>
+                                    <h5>{{ data.food_name }}</h5>
+                                    <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
+                                </div>
+                                <div class="meal-macros">
+                                    <span title="Protein">P: {{ data.protein }}g</span>
+                                    <span title="Carbs">C: {{ data.carbs }}g</span>
+                                    <span title="Fats">F: {{ data.fats }}g</span>
+                                </div>
+                                <div class="item-actions">
 
-                {% endif %}
-            </section>
-        </main>
-    </div>
+                                    <a class="icon-btn" title="Delete"
+                                       href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
+                                        <svg viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
 
-    <!-- Add Meal Modal -->
-    <div id="add-meal-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="close-btn" id="close-modal-btn">×</button>
-            <h2>Add Meal Entry</h2>
-            <form action="{% url 'nutrition:add_meal' %}" method="post">
-                {% csrf_token %}
-                <div class="form-row">
-                    <div class="input-group">
-                        <label>Meal Type</label>
-                        <div class="select-wrapper">
-                            <label>
-                                <select name="meal_type">
-                                    <option value="Breakfast">Breakfast</option>
-                                    <option value="Lunch">Lunch</option>
-                                    <option value="Dinner">Dinner</option>
-                                    <option value="Snack">Snack</option>
-                                </select>
-                            </label>
-                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="card meal-group">
+                    <h4>Snack</h4>
+                    {% for data in nutrition_service %}
+                        {% if data.meal_type == 'Snack' %}
+
+                            <div class="meal-item">
+                                <div>
+                                    <h5>{{ data.food_name }}</h5>
+                                    <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
+                                </div>
+                                <div class="meal-macros">
+                                    <span title="Protein">P: {{ data.protein }}g</span>
+                                    <span title="Carbs">C: {{ data.carbs }}g</span>
+                                    <span title="Fats">F: {{ data.fats }}g</span>
+                                </div>
+                                <div class="item-actions">
+
+                                    <a class="icon-btn" title="Delete"
+                                       href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
+                                        <svg viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="card meal-group">
+                    <h4>Dinner</h4>
+                    {% for data in nutrition_service %}
+                        {% if data.meal_type == 'Dinner' %}
+
+                            <div class="meal-item">
+                                <div>
+                                    <h5>{{ data.food_name }}</h5>
+                                    <p>{{ data.food_quantity }} | {{ data.kcal }} kcal</p>
+                                </div>
+                                <div class="meal-macros">
+                                    <span title="Protein">P: {{ data.protein }}g</span>
+                                    <span title="Carbs">C: {{ data.carbs }}g</span>
+                                    <span title="Fats">F: {{ data.fats }}g</span>
+                                </div>
+                                <div class="item-actions">
+                                    <a class="icon-btn" title="Delete"
+                                       href="{% url 'nutrition:delete_meal_data' %}?meal_id={{ data.id }}">
+                                        <svg viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                        </svg>
+                                    </a>j
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+    </main>
+</div>
+
+<!-- Add Meal Modal -->
+<div id="add-meal-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-btn" id="close-modal-btn">×</button>
+        <h2>Add Meal Entry</h2>
+        <form action="{% url 'nutrition:add_meal' %}" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Meal Type</label>
+                    <div class="select-wrapper">
+                        <label>
+                            <select name="meal_type">
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                                <option value="Snack">Snack</option>
+                            </select>
+                        </label>
                     </div>
+                </div>
 
                 <div class="input-group">
                     <label>Food Name</label>
                     <input type="text" name="food_name" placeholder="e.g., Brown Rice, Paneer Sabzi">
                 </div>
                 <button type="submit" class="action-btn">Save Meal</button>
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+</div>
 </body>
 
 </html>

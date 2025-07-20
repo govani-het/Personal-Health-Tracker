@@ -35,7 +35,7 @@ def add_exercise(user_id, exercise_type, exercise_name, intensity, duration, dis
         exercise_data = response.json()
 
         new_exercise = Exercise.objects.create(
-            user_id=user_instance,
+            user=user_instance,
             exercise_type=exercise_type,
             exercise_name=exercise_name,
             intensity=intensity,
@@ -43,8 +43,8 @@ def add_exercise(user_id, exercise_type, exercise_name, intensity, duration, dis
         )
         Cardio.objects.create(
             exercise=new_exercise,
-            duration=duration,
-            distance=distance,
+            duration_minutes=duration,
+            distance_km=distance,
         )
 
     elif exercise_type == 'Weight Lifting':
@@ -67,7 +67,7 @@ def add_exercise(user_id, exercise_type, exercise_name, intensity, duration, dis
         exercise_data = response.json()
 
         new_exercise = Exercise.objects.create(
-            user_id=user_instance,
+            user=user_instance,
             exercise_type=exercise_type,
             exercise_name=exercise_name,
             intensity=intensity,
@@ -75,8 +75,26 @@ def add_exercise(user_id, exercise_type, exercise_name, intensity, duration, dis
         )
         WeightLifting.objects.create(
             exercise=new_exercise,
-            weight=weight,
-            exercise_set=exercise_set,
-            exercise_reps=exercise_reps,
+            weight_kg=weight,
+            sets=exercise_set,
+            reps=exercise_reps,
         )
         return True
+
+
+def read_exercises_data(user_id, date):
+    exercises = Exercise.objects.filter(
+        user=user_id,
+        log_date=date,
+    ).select_related(
+        'cardio_details',
+        'weight_lifting_details'
+    )
+
+    return exercises
+
+
+def delete_workout(exercise_id):
+    exercise = Exercise.objects.get(id=exercise_id)
+    exercise.delete()
+    return True
