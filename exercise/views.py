@@ -1,20 +1,22 @@
 from datetime import datetime
-
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . import services
 
 
 def load_workout_page(request):
     user_id = request.session.get('user_id')
-    date = datetime.now().strftime('%Y-%m-%d')
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    date = request.GET.get('date')
 
     if user_id is None:
         return redirect('')
 
     try:
-
-        workout = services.read_exercises_data(user_id, date)
-
+        if date is None:
+            workout = services.read_exercises_data(user_id, current_date)
+        else:
+            workout = services.read_exercises_data(user_id, date)
         return render(request, 'exercise_page.html', {'workout': workout})
     except:
         return render(request, 'exercise_page.html', {'workout': None})
@@ -49,3 +51,20 @@ def delete_workout(request):
 
     services.delete_workout(exercise_id)
     return redirect('exercise:load_workout_page')
+
+
+def get_data_based_on_date(request):
+
+    user_id = request.session.get('user_id')
+    date = request.GET.get('date')
+
+    if user_id is None:
+        return redirect('')
+    try:
+        workout = services.get_exercises_data(user_id, date)
+        print(workout)
+        return JsonResponse(
+            {'workout': workout}
+        )
+    except:
+        return render(request, 'exercise_page.html', {'workout': None})

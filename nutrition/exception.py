@@ -6,3 +6,6 @@ class UserNotFound(Exception):
 
 class UserDataNotFound(Exception):
     pass
+
+class DataNotFound(Exception):
+    pass

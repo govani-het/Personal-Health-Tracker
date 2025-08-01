@@ -80,3 +80,4 @@ td:nth-child(2), td:nth-child(3) { text-align: right; }
     .main-header { flex-direction: column; align-items: flex-start; gap: 15px; }
     .chart-header { flex-direction: column; align-items: flex-start; gap: 15px; }
 }
+

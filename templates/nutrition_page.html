@@ -35,25 +35,22 @@
         </header>
 
         <section class="daily-summary">
+      
             <div class="summary-card calories">
-                <div class="progress-ring" style="--p:{{ total_nutrition.0 }};--c:#ff9f43;"></div>
-                <div class="summary-text"><h4>{{ count_nutrition.0|floatformat:2 }}/2000</h4>
-                    <p>Calories (kcal)</p></div>
+                <div id="summary-calories-progress" class="progress-ring" style="--p:{{ total_nutrition.0 }};--c:#ff9f43;"></div>
+                <div class="summary-text"><h4 id="summary-calories-value">{{ count_nutrition.0|floatformat:2 }}/2000</h4><p>Calories (kcal)</p></div>
             </div>
             <div class="summary-card protein">
-                <div class="progress-ring" style="--p:{{ total_nutrition.1 }};--c:#3b82f6;"></div>
-                <div class="summary-text"><h4>{{ count_nutrition.1|floatformat:2 }}/150g</h4>
-                    <p>Protein</p></div>
+                <div id="summary-protein-progress" class="progress-ring" style="--p:{{ total_nutrition.1 }};--c:#3b82f6;"></div>
+                <div class="summary-text"><h4 id="summary-protein-value">{{ count_nutrition.1|floatformat:2 }}/150g</h4><p>Protein</p></div>
             </div>
             <div class="summary-card carbs">
-                <div class="progress-ring" style="--p:{{ total_nutrition.2 }};--c:#10b981;"></div>
-                <div class="summary-text"><h4>{{ count_nutrition.2|floatformat:2 }}/250g</h4>
-                    <p>Carbs</p></div>
+                <div id="summary-carbs-progress" class="progress-ring" style="--p:{{ total_nutrition.2 }};--c:#10b981;"></div>
+                <div class="summary-text"><h4 id="summary-carbs-value">{{ count_nutrition.2|floatformat:2 }}/250g</h4><p>Carbs</p></div>
             </div>
             <div class="summary-card fats">
-                <div class="progress-ring" style="--p:{{ total_nutrition.3 }};--c:#8b5cf6;"></div>
-                <div class="summary-text"><h4>{{ count_nutrition.3|floatformat:2 }}/70g</h4>
-                    <p>Fats</p></div>
+                <div id="summary-fats-progress" class="progress-ring" style="--p:{{ total_nutrition.3 }};--c:#8b5cf6;"></div>
+                <div class="summary-text"><h4 id="summary-fats-value">{{ count_nutrition.3|floatformat:2 }}/70g</h4><p>Fats</p></div>
             </div>
         </section>
 
@@ -180,6 +177,13 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+            {% if messages %}
+              <ul class="messages">
+                {% for message in messages %}
+                  <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
             {% endif %}
         </section>
     </main>
@@ -217,5 +221,6 @@
     </div>
 </div>
 </body>
+
 
 </html>

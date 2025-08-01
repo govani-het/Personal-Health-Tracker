@@ -20,7 +20,7 @@ class UserNutritionData(models.Model):
         return "{} {} {} {} {} {} {} {}".format(self.meal_type, self.meal_date, self.food_quantity,self.food_name,self.kcal,self.protein,self.carbs,self.fats)
 
 
-    def __as_dict(self):
+    def __as_dict__(self):
         return {
             'id': self.id,
             'user_id': self.user_id,

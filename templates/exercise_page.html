@@ -19,13 +19,7 @@
         <main class="main-content">
             <header class="page-header">
                 <div class="date-navigator">
-                    <button class="nav-arrow">
-                        <
-                    </button>
-                    <input type="date" id="current-date">
-                    <button class="nav-arrow">
-                        >
-                    </button>
+                    <input type="date" onblur="update_data()" id="current-date">
                 </div>
                 <div class="header-actions"><button class="action-btn" id="add-exercise-btn"><span>+</span> Add Exercise</button></div>
             </header>

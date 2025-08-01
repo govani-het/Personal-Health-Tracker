@@ -43,7 +43,7 @@ def add_nutrition_data(user_id, meal_type, food_name):
                 carbs=data.get('nf_total_carbohydrate', 0),
                 fats=data.get('nf_total_fat', 0),
             )
-            print(f"Successfully saved '{data.get('food_name')}' to the database.")
+
 
         return True
 
@@ -59,10 +59,26 @@ def add_nutrition_data(user_id, meal_type, food_name):
         return False
 
 def show_user_nutrition_data(user_id,date):
-    user_nutrition_data = UserNutritionData.objects.filter(user_id=user_id,meal_date=date)
-    if user_nutrition_data:
+    try:
+        user_nutrition_data = list(
+            UserNutritionData.objects.filter(
+                user_id=user_id,
+                meal_date=date
+            ).values(
+                'id',
+                'meal_type',
+                'food_name',
+                'food_quantity',
+                'kcal',
+                'protein',
+                'carbs',
+                'fats'
+            )
+        )
         return user_nutrition_data
-    else:
+
+    except exception.DataNotFound:
+        print(f"Data Not Found For This Data: {date}")
         return False
 
 def delete_nutrition_data(meal_id):

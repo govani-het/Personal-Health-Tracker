@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "exercise",
     "reminder",
     "suggestion",
+    "rest_framework"
 ]
 
 MIDDLEWARE = [

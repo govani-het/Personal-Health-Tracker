@@ -37,6 +37,8 @@
                 <div class="stat-card" id="card-goal">
                     {% if dashboard.0 > 0 %}
                         <h3>{{ dashboard.0 }} kg to go</h3><p>Goal Progress</p>
+                    {% elif dashboard.0 < 0 %}
+                        <h3>{{ dashboard.0 }} KG to go</h3><p>Goal Progress</p>
                     {% endif %}
                     <div class="progress-bar"><div class="progress" style="width: 65%;"></div></div>
                 </div>

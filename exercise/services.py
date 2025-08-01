@@ -1,3 +1,5 @@
+import datetime
+
 import requests
 from django.conf import settings
 from .models import Exercise, Cardio, WeightLifting
@@ -83,6 +85,7 @@ def add_exercise(user_id, exercise_type, exercise_name, intensity, duration, dis
 
 
 def read_exercises_data(user_id, date):
+
     exercises = Exercise.objects.filter(
         user=user_id,
         log_date=date,
@@ -98,3 +101,28 @@ def delete_workout(exercise_id):
     exercise = Exercise.objects.get(id=exercise_id)
     exercise.delete()
     return True
+
+
+def get_exercises_data(user_id, date):
+    exercise_data = list(
+        Exercise.objects.filter(
+            user_id=user_id,
+            log_date=date
+        ).values(
+            'id',
+            'log_date',
+            'exercise_type',
+            'exercise_name',
+            'intensity',
+            'kcal',
+
+            'cardio_details__duration_minutes',
+            'cardio_details__distance_km',
+
+            'weight_lifting_details__sets',
+            'weight_lifting_details__reps',
+            'weight_lifting_details__weight_kg'
+        )
+    )
+
+    return exercise_data
