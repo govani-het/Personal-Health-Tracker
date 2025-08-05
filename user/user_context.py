@@ -16,6 +16,7 @@ def user_context_data(request):
 
                 profile = ProfileSetUp.objects.get(user_id=user)
                 context['profile'] = profile
+
             except ProfileSetUp.DoesNotExist:
 
                 pass

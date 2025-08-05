@@ -76,6 +76,6 @@ def user_profile_setup(request):
 
         try:
             services.profile_setup(user_id, username, height, weight, goal, dob, gender, activity_level)
-            return redirect(request, 'user:index')
+            return redirect( 'user:index')
         except services.exception.ProfileSetUpAlreadyExists as e:
             return render(request, 'index.html')

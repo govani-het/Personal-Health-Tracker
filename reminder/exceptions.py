@@ -1,0 +1,2 @@
+class ReminderInPastError(Exception):
+    pass

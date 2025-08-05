@@ -357,3 +357,130 @@ body {
         padding-left: 70px; /* Adjust body padding to match collapsed sidebar */
     }
 }
+
+
+/* --- Global Styles & Variables (for context) --- */
+:root {
+    --bg-color: #F8F9FA; /* A light grey background like in your full image */
+    --card-bg: #FFFFFF;
+    --primary-color: #3B82F6; /* Blue from your button */
+    --text-primary: #1F2937; /* Dark text for titles */
+    --text-secondary: #6B7280; /* Lighter grey text for descriptions and icons */
+    --border-color: #E5E7EB; /* Light border for cards and list items */
+    --water-icon-color: #3B82F6;
+    --lunch-icon-color: #4B5563;
+    --workout-icon-color: #8B5CF6; /* Purple */
+    --danger-color: #EF4444; /* Red for delete hover */
+}
+
+
+/* --- Main Component Styles --- */
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px; /* Example max-width */
+}
+
+.reminder-list-card h2 {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 1rem 0;
+}
+
+#reminders-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.reminder-item {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Space between icon, details, time, etc. */
+    padding: 16px 8px; /* Vertical and horizontal padding */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reminder-item:last-child {
+    border-bottom: none; /* Remove border from the last item */
+}
+
+.reminder-icon-wrapper {
+    font-size: 1.25rem; /* Icon size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; /* Fixed width for alignment */
+}
+
+/* Icon-specific colors */
+.water-icon { color: var(--water-icon-color); }
+.lunch-icon { color: var(--lunch-icon-color); }
+.workout-icon { color: var(--workout-icon-color); }
+
+.reminder-details {
+    flex-grow: 1; /* This is key: it pushes the time and buttons to the right */
+}
+
+.reminder-details h3 {
+    font-size: 1rem; /* 16px */
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.reminder-details p {
+    font-size: 0.875rem; /* 14px */
+    color: var(--text-secondary);
+    margin: 4px 0 0 0;
+}
+
+.reminder-time {
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap; /* Prevent time from wrapping */
+}
+
+.reminder-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Space between edit and delete buttons */
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 1rem; /* Icon size inside button */
+    color: var(--text-secondary);
+    transition: color 0.2s ease-in-out;
+}
+
+.action-btn.edit-btn:hover {
+    color: var(--primary-color);
+}
+
+.action-btn.delete-btn:hover {
+    color: var(--danger-color);
+}
+
+/* Add this to your main CSS file */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Make sure it's on top of everything */
+}
