@@ -2,8 +2,10 @@ from datetime import datetime
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . import services
+from user.login_view import login_required
 
 
+@login_required()
 def load_workout_page(request):
     user_id = request.session.get('user_id')
     current_date = datetime.now().strftime('%Y-%m-%d')
@@ -15,18 +17,22 @@ def load_workout_page(request):
     try:
         if date is None:
             workout = services.read_exercises_data(user_id, current_date)
+
+            return render(request, 'exercise_page.html', {'workout': workout})
         else:
-            workout = services.read_exercises_data(user_id, date)
-        return render(request, 'exercise_page.html', {'workout': workout})
+            workout = services.get_exercises_data(user_id, date)
+            return render(request, 'exercise_page.html', {'workout': workout})
     except:
         return render(request, 'exercise_page.html', {'workout': None})
 
-
+@login_required()
 def add_workout(request):
+
     user_id = request.session.get('user_id')
     exercise_type = request.POST.get('exercise_type')
     exercise_name = request.POST.get('exercise_name')
     intensity = request.POST.get('intensity')
+
 
     if exercise_type == 'Cardio':
         duration = request.POST.get('duration')
@@ -45,14 +51,14 @@ def add_workout(request):
 
     return redirect('exercise:load_workout_page')
 
-
+@login_required()
 def delete_workout(request):
     exercise_id = request.GET.get('exercise_id')
 
     services.delete_workout(exercise_id)
     return redirect('exercise:load_workout_page')
 
-
+@login_required()
 def get_data_based_on_date(request):
 
     user_id = request.session.get('user_id')

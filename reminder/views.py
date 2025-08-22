@@ -8,12 +8,14 @@ from .models import Reminder
 from .serializers import ReminderSerializer
 from rest_framework.views import APIView
 from . import services
+from user.login_view import login_required
 
-
-
+@login_required()
 def load_reminder_page(request):
     return render(request,'reminder.html')
 
+
+@login_required()
 class ReminderView(APIView):
 
     def post(self, request):

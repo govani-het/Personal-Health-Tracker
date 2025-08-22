@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from . import services
 from .models import ProfileSetUp
 from django.contrib import messages
-
+from user.login_view import login_required
 
 def login(request):
     return render(request, 'login.html')
@@ -11,18 +11,18 @@ def login(request):
 def register(request):
     return render(request, 'register.html')
 
-
+@login_required()
 def index(request):
     user_id = request.session.get('user_id')
 
     dashboard = services.dashboard(user_id)
     return render(request, 'index.html', context={'dashboard': dashboard})
 
-
+@login_required()
 def load_progress_page(request):
     return render(request, 'progress_page.html')
 
-
+@login_required()
 def load_setting_page(request):
     return render(request, 'setting.html')
 
@@ -40,27 +40,6 @@ def create_user(request):
             return redirect('/register')
     else:
         return redirect('/register')
-
-
-def authenticate_user(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-
-        try:
-            user = services.authenticate_user(email, password)
-            request.session['user_id'] = user.user_id
-
-            if ProfileSetUp.objects.filter(user_id=user.user_id).exists():
-                return redirect('/index?user_id=' + str(user.user_id))
-            else:
-                return render(request, 'profile_setup.html')
-        except services.exception.AuthenticationError as e:
-            messages.error(request, str(e))
-            return redirect('/')
-        except services.exception.UserBlocked as e:
-            messages.error(request, str(e))
-            return redirect('/')
 
 
 def user_profile_setup(request):

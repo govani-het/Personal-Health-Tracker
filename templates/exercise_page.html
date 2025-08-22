@@ -19,7 +19,7 @@
         <main class="main-content">
             <header class="page-header">
                 <div class="date-navigator">
-                    <input type="date" onblur="update_data()" id="current-date">
+                    <input type="date" name="date" onblur="update_data()" id="current-date">
                 </div>
                 <div class="header-actions"><button class="action-btn" id="add-exercise-btn"><span>+</span> Add Exercise</button></div>
             </header>
@@ -39,7 +39,9 @@
                                     <p>{{ data.exercise_type }} |  {{ data.intensity }}</p>
                                 </div><div class="entry-stats">
                                 <span>{{ data.cardio_details.duration_minutes }} Min</span>
-                                <span>{{ data.cardio_details.distance_km }} KM</span>
+                                {% if data.cardio_details.distance_km != 0 %}
+                                    <span>{{ data.cardio_details.distance_km }} KM</span>
+                                {% endif %}    
                                 <span>{{ data.kcal }} kcal</span>
                             </div>
                                 <div class="item-actions">

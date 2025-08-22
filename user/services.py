@@ -18,9 +18,8 @@ def create_user(email, password):
 def authenticate_user(email, password):
     email = email.lower()
 
-    user = UserData.objects.get(email=email)
-
     if UserData.objects.filter(email=email).exists():
+        user = UserData.objects.get(email=email)
         if user.active:
             hashed_password = UserData.objects.get(email=email).password
 
