@@ -163,7 +163,7 @@ def verify_email(request):
 
             if user is not None:
                 try:
-                    services.send_otp(request,user.email)
+                    services.send_otp(request,user.email,user.user_id)
                 except Exception:
                     return JsonResponse({'message': 'Fails to send OTP'}, status=400)
             redirect_url = reverse('user:forget_password')
@@ -197,3 +197,16 @@ def check_otp(request):
         messages.error(request,'Your OTP is Wrong.')
         redirect_url = reverse('user:reset_password')
         return JsonResponse({'Error': True, 'redirect_url': redirect_url})
+
+def update_password(request):
+    try:
+        data = json.loads(request.body)
+        password = data.get('password')
+
+        if password is not None:
+            services.update_password(request,password)
+
+            return JsonResponse({'success': True, 'message': 'Password updated.'})
+
+    except Exception as e:
+        return JsonResponse({'message': 'An unexpected server error occurred.'}, status=500)

@@ -52,8 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
         checkOtp()
     });
      async function checkOtp(){
+         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         const otp = document.getElementById('otp-full').value
-        const response = await fetch(`user/api/check_otp/?otp=${otp}`)
+        const response = await fetch(`user/api/check_otp/`,{
+            method:'POST',
+            headers : {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+            },
+            body : JSON.stringify({
+                otp : otp
+            })
+        })
         const message = document.getElementById('message')
         if (!response.ok){
             throw new Error('Invalid OTP')
@@ -139,3 +149,52 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+
+async function updatePassword(){
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    const password = document.getElementById('new-password').value
+    const confirmPassword = document.getElementById('confirm-password').value
+    const message = document.getElementById('error-message')
+
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+    if (password !== confirmPassword){
+        message.innerHTML = 'Passwords do not match!'
+        message.style.color = 'red'
+    }
+
+    if (password.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        return false;
+    }
+
+    if (!specialCharRegex.test(password)) {
+        alert('Password must contain at least one special character (e.g., !, @, #, $).');
+        return false;
+    }
+
+    if (password !== confirm_password) {
+        alert('Your passwords do not match.');
+        return false;
+    }
+
+    const response = await fetch('user/api/update_password/',{
+        method:'POST',
+        headers:{
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({
+            password : password
+        })
+    })
+
+    const data = await response.json()
+    if (data.success){
+        alert(data.message)
+        window.location.href = '/'
+    }
+
+}

@@ -68,7 +68,9 @@ def dashboard(user_id):
         return diff, bmi
 
 
-def send_otp(request, email):
+def send_otp(request, email,user_id):
+    request.session['user_id'] = user_id
+    request.session['email'] = email
     password = "txjh gvgg jlfk hkcg"
     sender = "hetwww0@gmail.com"
     receiver = email
@@ -85,4 +87,17 @@ def send_otp(request, email):
     text = msg.as_string()
     server.sendmail(sender, receiver, text)
     server.quit()
+    return JsonResponse({'status': 'success'})
+
+
+def update_password(request,password):
+    user_id = request.session['user_id']
+    email = request.session['email']
+    password = password
+
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(rounds=12)).decode('utf-8')
+
+    user = UserData(user_id=user_id,email=email,password=hashed_password)
+    user.save()
+    request.session.flush()
     return JsonResponse({'status': 'success'})
