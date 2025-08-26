@@ -58,7 +58,6 @@ async function update_data() {
     }
     const data =await response.json()
 
-    console.log(data)
     data.workout.forEach(workout => {
         if (workout.exercise_type == 'Cardio'){
             const cardioHTML = `

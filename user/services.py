@@ -1,7 +1,13 @@
-from . import exception
+import random
 
+from django.http import JsonResponse
+
+from . import exception
+import smtplib
 from .models import UserData, ProfileSetUp
 import bcrypt
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 def create_user(email, password):
@@ -60,3 +66,23 @@ def dashboard(user_id):
         bmi = weight / (height * height)
 
         return diff, bmi
+
+
+def send_otp(request, email):
+    password = "txjh gvgg jlfk hkcg"
+    sender = "hetwww0@gmail.com"
+    receiver = email
+    msg = MIMEMultipart()
+    msg['From'] = sender
+    msg['To'] = receiver
+    msg['Subject'] = "OTP"
+    otp = random.randint(100000, 999999)
+    request.session['otp'] = otp
+    msg.attach(MIMEText('Your OTP is: ' + str(otp), 'plain'))
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender, password)
+    text = msg.as_string()
+    server.sendmail(sender, receiver, text)
+    server.quit()
+    return JsonResponse({'status': 'success'})

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.utils.decorators import method_decorator
 from user.models import UserData
 from .exceptions import *
 from .models import Reminder
@@ -15,7 +16,7 @@ def load_reminder_page(request):
     return render(request,'reminder.html')
 
 
-@login_required()
+@method_decorator(login_required(), name='dispatch')
 class ReminderView(APIView):
 
     def post(self, request):

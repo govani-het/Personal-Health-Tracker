@@ -1,7 +1,10 @@
+import json
+from django.urls import reverse
 from datetime import datetime, timedelta
 from functools import wraps
 
 from django.forms import model_to_dict
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from . import services
 from .models import ProfileSetUp, UserData
@@ -10,7 +13,7 @@ import os
 from dotenv import load_dotenv
 import jwt
 from djangoProject.settings import SECRET_KEY
-
+from . import services
 
 
 load_dotenv()
@@ -139,3 +142,58 @@ def user_logout(request):
     response.set_cookie(os.getenv('REFRESHTOKEN'),max_age=int(os.getenv('TIME_OUT_MAX_AGE')))
 
     return response
+
+
+
+def reset_password(request):
+    return render(request,'emailVerification.html')
+
+
+# your_app/views.py
+
+def verify_email(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            if not email:
+                return JsonResponse({'message': 'Email not provided.'}, status=400)
+
+            user = UserData.objects.get(email=email)
+
+            if user is not None:
+                try:
+                    services.send_otp(request,user.email)
+                except Exception:
+                    return JsonResponse({'message': 'Fails to send OTP'}, status=400)
+            redirect_url = reverse('user:forget_password')
+            return JsonResponse({
+                'status': 'success',
+                'message': 'User found. Redirecting...',
+                'redirect_url': redirect_url
+            })
+
+        except UserData.DoesNotExist:
+
+            return JsonResponse({'message': 'Email does not exist in our records.'}, status=404)
+
+        except Exception as e:
+
+            return JsonResponse({'message': 'An unexpected server error occurred.'}, status=500)
+
+    return JsonResponse({'message': 'Invalid request method.'}, status=405)
+def forget_password(request):
+    return render(request,'forgetPassword.html')
+
+def check_otp(request):
+    data = json.loads(request.body)
+    otp = data.get('otp')
+    session_otp = request.session.get('otp')
+
+    if int(otp) == int(session_otp):
+        return JsonResponse({'success': True, 'message': 'Your OTP has been verified.'})
+    else:
+        del request.session['otp']
+        messages.error(request,'Your OTP is Wrong.')
+        redirect_url = reverse('user:reset_password')
+        return JsonResponse({'Error': True, 'redirect_url': redirect_url})

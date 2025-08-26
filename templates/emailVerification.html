@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - HealthHub</title>
+    <link rel="stylesheet" href="{% static 'css/emailVerification.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Image Panel (NEW IMAGE) -->
+        <div class="image-panel">
+            <img src="{% static 'image/back.jpg' %}" style="height: 650px" alt="Runner focused on the path ahead">
+        </div>
+
+        <!-- Form Panel -->
+        <div class="form-panel">
+            <div class="form-content">
+                <h2 class="form-title">Forgot Your Password?</h2>
+                <p class="form-subtitle">
+                    No problem! Enter your email address below, and we'll send you a verification code to reset it.
+                </p>
+            
+                {% if messages %}
+                    <div class="messages-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            
+                <form id="email-form">
+                    {% csrf_token %}
+                    <h4 id="error"></h4>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" name="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <button type="button" onclick="verifyEmail()" class="btn" id="send-otp-btn">Send Verification Code</button>
+                </form>
+
+                <div class="separator"></div>
+                
+                <div class="motivation-quote">
+                    <p>"Strength comes from overcoming things you once thought you couldn't."</p>
+                </div>
+
+                <p class="back-link">Remembered your password? <a href="/">Back to Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/emailVerification.js' %}"></script>
+</body>
+</html>

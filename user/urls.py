@@ -16,5 +16,9 @@ urlpatterns = [
     path('progress_page', views.load_progress_page, name='progress_page'),
     path('load_settings', views.load_setting_page, name='load_setting_page'),
     path('logout_user', login_view.user_logout, name='user_logout'),
+    path('reset_password', login_view.reset_password, name='reset_password'),
+    path('api/verify_email/',login_view.verify_email, name='verify_email'),
+    path('forget_password', login_view.forget_password, name='forget_password'),
+    path('api/check_otp/',login_view.check_otp,name='check_otp'),
 
 ]

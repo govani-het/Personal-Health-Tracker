@@ -26,4 +26,3 @@ def delete_reminder(id: int):
         return True
     except Reminder.DoesNotExist:
         raise ReminderInPastError("Reminder does not exist.")
-
