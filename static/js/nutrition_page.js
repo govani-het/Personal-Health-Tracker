@@ -86,6 +86,8 @@ async function update_data(){
     summary.fats.value.textContent = `${data.summary[3].toFixed(2)}/70`;
     summary.fats.progress.style.setProperty('--p', data.percentages[3]);
 
+    document.getElementById('add-meal').style.display = 'none'
+
     data.meals.forEach(meal => {
         const mealLogHTML = `
             <div class="card meal-group">

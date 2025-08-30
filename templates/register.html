@@ -15,8 +15,8 @@
 
             const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
-            if (password.length < 8) {
-                alert('Password must be at least 8 characters long.');
+            if (password.length < 8 && password.length > 16) {
+                alert('Password must be in 8 to 16.');
                 return false;
             }
 

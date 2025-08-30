@@ -22,32 +22,44 @@
                     <h2>Account Settings</h2>
                     <p>Manage your profile information and password.</p>
                 </div>
+                
             </header>
-
+            
             <section class="settings-grid">
+                
                 <!-- Profile Information Form -->
                 <div class="card">
                     <h4>Profile Information</h4>
-                    <form class="profile-form">
+                    <form class="profile-form" id="profileForm">
+                    <div id="message-box" class="message-box" style="display: none"></div>
+                    {% csrf_token %}
                         <div class="form-grid">
-                            <div class="input-group" style=""><label for="Profile_Name">Profile Name</label><input type="text" id="profileName" value="180"></div>
-                            <div class="input-group"><label for="height">Height (cm)</label><input type="number" id="height" value="180"></div>
-                            <div class="input-group"><label for="goal-weight">Goal Weight (kg)</label><input type="number" id="goal-weight" value="70"></div>
-                            <div class="input-group"><label for="dob">Date of Birth</label><input type="date" id="dob" value="1995-08-15"></div>
+                            <div class="input-group" style=""><label for="Profile_Name">Profile Name</label><input type="text" id="profileName" value="{{ username }}"></div>
+                            <div class="input-group"><label for="height">Height (cm)</label><input type="number" id="height" value="{{ height }}"></div>
+                            <div class="input-group"><label for="current-weight">Current Weight (kg)</label><input type="number" id="current-weight" value="{{ weight }}"></div>
+                            <div class="input-group"><label for="goal-weight">Goal Weight (kg)</label><input type="number" id="goal-weight" value="{{ goal }}"></div>
+                            <div class="input-group"><label for="dob">Date of Birth</label><input type="date" id="dob" name="dob" value="{{ dob|date:'Y-m-d' }}"></div>
                         </div>
                         <div class="input-group">
                             <label>Gender</label>
                             <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="gender" value="male" checked><span>Male</span></label>
-                                <label class="radio-label"><input type="radio" name="gender" value="female"><span>Female</span></label>
-                                <label class="radio-label"><input type="radio" name="gender" value="other"><span>Other</span></label>
+                                <label class="radio-label"><input type="radio" name="gender" value="male" {% if gender == "male" %}checked{% endif %}><span>Male</span></label>
+                                <label class="radio-label"><input type="radio" name="gender" value="female" {% if gender == "female" %}checked{% endif %}><span>Female</span></label>
+                                <label class="radio-label"><input type="radio" name="gender" value="other" {% if gender == "other" %}checked{% endif %}><span>Other</span></label>
                             </div>
                         </div>
                         <div class="input-group">
                             <label for="activity-level">Activity Level</label>
-                            <div class="select-wrapper"><select id="activity-level"><option>Sedentary</option><option selected>Lightly Active</option><option>Moderately Active</option><option>Very Active</option></select></div>
+                            <div class="select-wrapper">
+                                <select id="activity-level">
+                                    <option value="Sedentary" {% if activity_level == "Sedentary" %}selected{% endif %}>Sedentary</option>
+                                    <option value="Lightly Active" {% if activity_level == "Lightly Active" %}selected{% endif %}>Lightly Active</option>
+                                    <option value="Moderately Active" {% if activity_level == "Moderately Active" %}selected{% endif %}>Moderately Active</option>
+                                    <option value="Very Active" {% if activity_level == "Very Active" %}selected{% endif %}>Very Active</option>
+                                </select>
+                            </div>
                         </div>
-                        <button type="submit" class="action-btn">Update Profile</button>
+                        <button type="button" onclick="update_profile_data()" class="action-btn">Update Profile</button>
                     </form>
                 </div>
 
@@ -66,11 +78,21 @@
         <div class="modal-content">
             <button class="close-btn" id="close-modal-btn">×</button>
             <h2>Change Your Password</h2>
-            <form>
-                <div class="input-group"><label for="current-password">Current Password</label><input type="password" id="current-password" placeholder="Enter your current password"></div>
-                <div class="input-group"><label for="new-password">New Password</label><input type="password" id="new-password" placeholder="Enter a new password"></div>
-                <div class="input-group"><label for="confirm-password">Confirm New Password</label><input type="password" id="confirm-password" placeholder="Confirm your new password"></div>
-                <button type="submit" class="action-btn update-btn">Update Password</button>
+            <form id="password-change">
+                <h4 id="message"></h4>
+                <div class="input-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" placeholder="Enter your current password">
+                </div>
+                <div class="input-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" placeholder="Enter a new password">
+                </div>
+                <div class="input-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your new password">
+                </div>
+                <button type="button" onclick="update_password()" class="action-btn update-btn">Update Password</button>
             </form>
         </div>
     </div>

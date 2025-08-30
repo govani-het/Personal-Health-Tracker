@@ -1,4 +1,3 @@
-
 from django.http import JsonResponse
 
 from datetime import datetime
@@ -8,8 +7,10 @@ from django.shortcuts import render, redirect
 from . import services
 from . import exception
 from user.login_view import login_required
+from django.views.decorators.cache import never_cache
 
 
+@never_cache
 @login_required()
 def load_nutrition_page(request):
     user_id = request.session.get('user_id')
@@ -28,6 +29,7 @@ def load_nutrition_page(request):
         messages.error(request, str(e))
         return render(request, 'nutrition_page.html', )
 
+
 @login_required()
 def add_meal(request):
     if request.method == "POST":
@@ -44,11 +46,13 @@ def add_meal(request):
             messages.error(request, e)
             return redirect('nutrition:load_nutrition_page')
 
+
 @login_required()
 def delete_meal_data(request):
     meal_id = request.GET.get('meal_id')
     services.delete_nutrition_data(meal_id)
     return redirect('nutrition:load_nutrition_page')
+
 
 @login_required()
 def get_data_based_on_date(request):

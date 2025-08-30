@@ -12,3 +12,6 @@ class UserBlocked(ValueError):
 
 class ProfileSetUpAlreadyExists(ValueError):
     pass
+
+class ProfileSetUpDoesNotExist(ValueError):
+    pass

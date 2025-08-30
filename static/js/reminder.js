@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded',function () {
                         <h3 id="title">${reminder.reminder_title}</h3>
                         <p id="description">${reminder.reminder_description}</p>
                     </div>
-                    <span class="reminder-time" id="date">${reminderDate.toLocaleString()}</span>
+                    <span class="reminder-time" id="date">${reminder.datetime}</span>
                     <div class="reminder-action-buttons">
                         <button class="action-btn edit-btn" title="Edit Reminder">
                             <i class="fas fa-pencil-alt"></i>
@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded',function () {
 
 
     async function handleCreateFormSubmit(event){
+        const form = document.getElementById('add-reminder-form')
         event.preventDefault()
         errorContainer.innerHTML=" ";
 
@@ -68,6 +69,10 @@ document.addEventListener('DOMContentLoaded',function () {
 
         const reminderId = document.getElementById('id').value
 
+        const localDateTimeValue = formData.get('datetime');
+        const localDate = new Date(localDateTimeValue);
+        const utcDateTimeString = localDate.toISOString();
+        formData.set('datetime', utcDateTimeString);
 
         const data = {
             reminder_title: formData.get('reminder_title'),
@@ -92,8 +97,8 @@ document.addEventListener('DOMContentLoaded',function () {
                         const errorMessage = Object.values(newReminder).flat().join(' ');
                         throw new Error(errorMessage || 'An unknown error occurred.');
                     }
-
-                fetchAndDisplayReminder();
+                form.querySelector('button[type="submit"]').textContent = 'Add Reminder'
+                await fetchAndDisplayReminder();
                 createForm.reset();
 
             }else{
@@ -106,7 +111,6 @@ document.addEventListener('DOMContentLoaded',function () {
                     body: JSON.stringify(data)
                 });
                 const newReminder = await response.json();
-                console.log(newReminder)
                     if (!response.ok) {
                         const errorMessage = Object.values(newReminder).flat().join(' ');
                         throw new Error(errorMessage || 'An unknown error occurred.');
@@ -114,7 +118,7 @@ document.addEventListener('DOMContentLoaded',function () {
 
                 const newCardHTML = createReminderCard(newReminder)
                 reminderList.innerHTML += newCardHTML
-
+                fetchAndDisplayReminder();
                 createForm.reset();
             }
         }
@@ -122,6 +126,9 @@ document.addEventListener('DOMContentLoaded',function () {
             errorContainer.textContent = error.message;
         }
     }
+
+
+
     async function editReminder(reminderItem){
         const form = document.getElementById('add-reminder-form')
 
@@ -130,14 +137,13 @@ document.addEventListener('DOMContentLoaded',function () {
         const description = reminderItem.querySelector('p[id="description"]').textContent.trim();
         const date = reminderItem.querySelector('span[id="date"]').textContent.trim();
 
-        const formatedDate = new Date(date).toISOString().slice(0,16)
 
         form.reset()
 
         form.querySelector('input[name="id"]').value = id;
         form.querySelector('input[name="reminder_title"]').value = title;
         form.querySelector('input[name="reminder_description"]').value = description;
-        form.querySelector('input[name="datetime"]').value = formatedDate;
+        form.querySelector('input[name="datetime"]').value = date ;
         form.querySelector('button[type="submit"]').textContent = 'Update Data'
 
 
@@ -158,7 +164,7 @@ document.addEventListener('DOMContentLoaded',function () {
     })
 
     createForm.addEventListener('submit', handleCreateFormSubmit);
-    fetchAndDisplayReminder();
+    fetchAndDisplayReminder()
 
 });
 
@@ -178,15 +184,25 @@ async function deleteReminder(reminderId){
                 }
             });
 
+            const data = await response.json()
+            console.log(data)
+            if (data.success){
+                errorContainer.textContent = data.message
+                errorContainer.style.color = 'green'
+            }
+
             if (!response.ok) {
-                throw new Error('Failed to delete the reminder.');
+                errorContainer.textContent = data.message
+                errorContainer.style.color = 'red'
             }
 
             const ReminderElement = document.getElementById(`reminder-item-${reminderId}`)
             if (ReminderElement){
                 ReminderElement.remove();
+                document.getElementById('add-reminder-form').reset()
             }
         }catch (error){
             errorContainer.textContent = error.message;
+            errorContainer.style.color = 'red'
         }
 }

@@ -3,8 +3,10 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . import services
 from user.login_view import login_required
+from django.views.decorators.cache import never_cache
 
 
+@never_cache
 @login_required()
 def load_workout_page(request):
     user_id = request.session.get('user_id')
@@ -24,6 +26,8 @@ def load_workout_page(request):
             return render(request, 'exercise_page.html', {'workout': workout})
     except:
         return render(request, 'exercise_page.html', {'workout': None})
+
+
 
 @login_required()
 def add_workout(request):
@@ -51,12 +55,16 @@ def add_workout(request):
 
     return redirect('exercise:load_workout_page')
 
+
+
 @login_required()
 def delete_workout(request):
     exercise_id = request.GET.get('exercise_id')
 
     services.delete_workout(exercise_id)
     return redirect('exercise:load_workout_page')
+
+
 
 @login_required()
 def get_data_based_on_date(request):

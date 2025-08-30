@@ -1,8 +1,8 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 
-from django.utils.decorators import method_decorator
 from user.models import UserData
 from .exceptions import *
 from .models import Reminder
@@ -10,13 +10,15 @@ from .serializers import ReminderSerializer
 from rest_framework.views import APIView
 from . import services
 from user.login_view import login_required
+from django.views.decorators.cache import never_cache
 
+
+@never_cache
 @login_required()
 def load_reminder_page(request):
-    return render(request,'reminder.html')
+    return render(request, 'reminder.html')
 
 
-@method_decorator(login_required(), name='dispatch')
 class ReminderView(APIView):
 
     def post(self, request):
@@ -31,9 +33,9 @@ class ReminderView(APIView):
         try:
             reminder = services.add_reminder(
                 user=user_instence,
-                reminder_title = validated_data['reminder_title'],
-                reminder_description = validated_data['reminder_description'],
-                datetime = validated_data['datetime'],
+                reminder_title=validated_data['reminder_title'],
+                reminder_description=validated_data['reminder_description'],
+                reminder_time=validated_data['datetime'],
             )
 
 
@@ -51,18 +53,23 @@ class ReminderView(APIView):
 
         try:
             reminder = services.get_reminder(user_instence)
-            response = ReminderSerializer(reminder,many=True)
+            response = ReminderSerializer(reminder, many=True)
             return Response(response.data, status=status.HTTP_200_OK)
 
         except ReminderInPastError as e:
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ReminderRetrieveUpdateDestroyAPIView(APIView):
+
     def delete(self, request, pk):
         try:
-            reminder = services.delete_reminder(pk)
-            return Response(reminder)
+
+            result = services.delete_reminder(pk)
+
+            return JsonResponse(result,status=status.HTTP_200_OK)
         except:
-            return Response({'detail': "Something is wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'detail': "Failed to delete the reminder."}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
 

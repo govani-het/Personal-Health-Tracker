@@ -21,5 +21,7 @@ urlpatterns = [
     path('forget_password', login_view.forget_password, name='forget_password'),
     path('api/check_otp/',login_view.check_otp,name='check_otp'),
     path('api/update_password/',login_view.update_password,name='update_password'),
+    path('api/update_profile_data/', views.update_user_profile, name='update_profile_data'),
+    path('api/change_password/', views.change_password, name='change_password'),
 
 ]

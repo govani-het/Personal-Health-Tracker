@@ -160,11 +160,6 @@ async function updatePassword(){
 
     const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
-    if (password !== confirmPassword){
-        message.innerHTML = 'Passwords do not match!'
-        message.style.color = 'red'
-    }
-
     if (password.length < 8) {
         alert('Password must be at least 8 characters long.');
         return false;
@@ -175,7 +170,7 @@ async function updatePassword(){
         return false;
     }
 
-    if (password !== confirm_password) {
+    if (password !== confirmPassword) {
         alert('Your passwords do not match.');
         return false;
     }
