@@ -22,12 +22,12 @@ def load_nutrition_page(request):
         count_nutrition = services.count_nutrition_data(user_id, date)
         total_nutrition = services.count_nutrition_data_by_percentage(user_id, date)
 
-        return render(request, 'nutrition_page.html',
+        return render(request, 'nutritionPage.html',
                       {'nutrition_service': nutrition_service, 'count_nutrition': count_nutrition,
                        'total_nutrition': total_nutrition})
     except exception.UserDataNotFound as e:
         messages.error(request, str(e))
-        return render(request, 'nutrition_page.html', )
+        return render(request, 'nutritionPage.html', )
 
 
 @login_required()

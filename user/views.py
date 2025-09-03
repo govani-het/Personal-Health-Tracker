@@ -29,7 +29,7 @@ def index(request):
 @never_cache
 @login_required()
 def load_progress_page(request):
-    return render(request, 'progress_page.html')
+    return render(request, 'progressPage.html')
 
 
 @never_cache

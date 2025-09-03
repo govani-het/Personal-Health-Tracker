@@ -1,3 +1,4 @@
+import os
 import random
 
 from django.http import JsonResponse
@@ -8,6 +9,9 @@ from .models import UserData, ProfileSetUp
 import bcrypt
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def create_user(request):
@@ -103,17 +107,17 @@ def dashboard(user_id):
         height = int(user_profiles.height) / 100
         goal = user_profiles.goal
 
-        diff = goal - weight
+        remaining_weight = goal - weight
         bmi = weight / (height * height)
 
-        return diff, bmi
+        return remaining_weight, bmi
 
 
 def send_otp(request, email, user_id):
     request.session['user_id'] = user_id
     request.session['email'] = email
-    password = "txjh gvgg jlfk hkcg"
-    sender = "hetwww0@gmail.com"
+    password = os.getenv('EMAIL_PASSWORD')
+    sender = os.getenv('EMAIL_USER')
     receiver = email
     msg = MIMEMultipart()
     msg['From'] = sender

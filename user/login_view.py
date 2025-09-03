@@ -60,7 +60,7 @@ def check_profile_setup(request):
     if ProfileSetUp.objects.filter(user_id=user_id).exists():
         return redirect('/index')
     else:
-        return render(request, 'profile_setup.html')
+        return render(request, 'profileSetupPage.html')
 
 
 def login_required():

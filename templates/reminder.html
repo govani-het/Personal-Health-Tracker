@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reminders - HealthHub</title>
     
-    {% load static %} <!-- Add this if you haven't already in a base template -->
+    {% load static %} 
 
-    <!-- Google Fonts: Inter -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome for Icons -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Link to your external CSS file -->
+
     <link rel="stylesheet" href="{% static 'css/reminder.css' %}">
 
 </head>
@@ -89,7 +89,9 @@
 
 
     </div>
-    <!-- Link to your external JavaScript file -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    
     <script src="{% static 'js/reminder.js' %}"></script>
 </body>
 </html>

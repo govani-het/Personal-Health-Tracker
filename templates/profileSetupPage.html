@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/profile_setup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profileSetupPage.css' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealthHub: Complete Your Profile</title>
@@ -26,7 +26,7 @@
             <div class="form-wrapper">
                 <h3>Complete Your Profile</h3>
                 <p>This info helps us create a personalized plan for you.</p>
-                <form action="{% url 'user:profile_setup' %}" method="POST">
+                <form id="profileForm" action="{% url 'user:profile_setup' %}" method="POST">
                     {% csrf_token %}
                     <div class="input-group">
                         <div class="input-group">

@@ -20,12 +20,12 @@ def load_workout_page(request):
         if date is None:
             workout = services.read_exercises_data(user_id, current_date)
 
-            return render(request, 'exercise_page.html', {'workout': workout})
+            return render(request, 'exercisePage.html', {'workout': workout})
         else:
             workout = services.get_exercises_data(user_id, date)
-            return render(request, 'exercise_page.html', {'workout': workout})
+            return render(request, 'exercisePage.html', {'workout': workout})
     except:
-        return render(request, 'exercise_page.html', {'workout': None})
+        return render(request, 'exercisePage.html', {'workout': None})
 
 
 
@@ -81,4 +81,4 @@ def get_data_based_on_date(request):
             {'workout': workout}
         )
     except:
-        return render(request, 'exercise_page.html', {'workout': None})
+        return render(request, 'exercisePage.html', {'workout': None})
