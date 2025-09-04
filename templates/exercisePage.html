@@ -10,7 +10,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body onload="update_data()">
     <div class="app-container">
         <!-- Sidebar (with 'Workouts' active) -->
         {% include 'sidebar.html' %}
@@ -25,9 +25,9 @@
             </header>
 
             <section class="daily-summary">
-                <div class="summary-card"><h4>60 min</h4><p>Total Duration</p></div>
-                <div class="summary-card"><h4>450 kcal</h4><p>Calories Burned</p></div>
-                <div class="summary-card"><h4>12 sets</h4><p>Total Sets</p></div>
+                <div class="summary-card"><h4>0 min</h4><p>Total Duration</p></div>
+                <div class="summary-card"><h4>0 kcal</h4><p>Calories Burned</p></div>
+                
             </section>
 
             <section class="exercise-log">
@@ -160,5 +160,7 @@
 
 
 </body>
-
+<script>
+    const deleteWorkoutUrl = "{% url 'exercise:delete_workout' %}";
+</script>
 </html>

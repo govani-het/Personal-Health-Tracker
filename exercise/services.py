@@ -9,8 +9,19 @@ from . import exception
 NUTRITIONIX_API_URL = "https://trackapi.nutritionix.com/v2/natural/exercise"
 
 
-def add_exercise(user_id, exercise_type, exercise_name, intensity, duration, distance, weight, exercise_set,
-                 exercise_reps):
+def add_exercise(request):
+    user_id = request.session.get('user_id')
+    exercise_type = request.POST.get('exercise_type')
+    exercise_name = request.POST.get('exercise_name')
+    intensity = request.POST.get('intensity')
+
+    duration = request.POST.get('duration')
+    distance = request.POST.get('distance')
+
+    exercise_set = request.POST.get('sets')
+    weight = request.POST.get('weight')
+    exercise_reps = request.POST.get('reps')
+
     try:
         user_instance = UserData.objects.get(user_id=user_id)
     except:
@@ -84,26 +95,18 @@ def add_exercise(user_id, exercise_type, exercise_name, intensity, duration, dis
         return True
 
 
-def read_exercises_data(user_id, date):
-
-    exercises = Exercise.objects.filter(
-        user=user_id,
-        log_date=date,
-    ).select_related(
-        'cardio_details',
-        'weight_lifting_details'
-    )
-
-    return exercises
-
-
-def delete_workout(exercise_id):
+def delete_workout(request):
+    exercise_id = request.GET.get('exercise_id')
     exercise = Exercise.objects.get(id=exercise_id)
     exercise.delete()
     return True
 
 
-def get_exercises_data(user_id, date):
+def get_exercises_data(request):
+
+    user_id = request.session.get('user_id')
+    date = request.GET.get('date')
+
     exercise_data = list(
         Exercise.objects.filter(
             user_id=user_id,
