@@ -1,0 +1,60 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+*.manifest
+*.spec
+
+# ---- Virtual Environment ----
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+
+# ---- Django ----
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Django migrations (optional: ignore compiled migration files but keep scripts)
+*/migrations/__pycache__/
+*/migrations/*.pyc
+
+# ---- Environment Variables ----
+*.env
+.env.*
+
+# ---- IDE & Editor ----
+.vscode/
+.idea/
+*.swp
+*~
+
+# ---- OS Files ----
+.DS_Store
+Thumbs.db
+
+# ---- Coverage / Testing ----
+.coverage
+*.cover
+coverage.xml
+htmlcov/
+pytest_cache/
+.tox/
+.mypy_cache/
+.pytest_cache/
+.cache/
+
+# ---- Build ----
+build/
+dist/
+*.lock
