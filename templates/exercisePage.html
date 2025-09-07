@@ -25,63 +25,12 @@
             </header>
 
             <section class="daily-summary">
-                <div class="summary-card"><h4>0 min</h4><p>Total Duration</p></div>
-                <div class="summary-card"><h4>0 kcal</h4><p>Calories Burned</p></div>
+                <div class="summary-card"><h4 id="duration"></h4><p>Total Duration(Cardio)</p></div>
+                <div class="summary-card"><h4 id="kcal_burn"></h4><p>Calories Burned</p></div>
                 
             </section>
 
             <section class="exercise-log">
-                {% if workout %}
-                    {% for data in workout %}
-                        {% if data.exercise_type == 'Cardio' %}
-                            <div class="card exercise-entry">
-                                <div><h3>{{ data.exercise_name }}</h3>
-                                    <p>{{ data.exercise_type }} |  {{ data.intensity }}</p>
-                                </div><div class="entry-stats">
-                                <span>{{ data.cardio_details.duration_minutes }} Min</span>
-                                {% if data.cardio_details.distance_km != 0 %}
-                                    <span>{{ data.cardio_details.distance_km }} KM</span>
-                                {% endif %}    
-                                <span>{{ data.kcal }} kcal</span>
-                            </div>
-                                <div class="item-actions">
-                                    
-                                    <a class="icon-btn" title="Delete"
-                                       href="{% url 'exercise:delete_workout' %}?exercise_id={{ data.id }}">
-                                        <svg viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        {% endif %}
-                        
-                        {% if data.exercise_type == 'Weight Lifting' %}
-                            <div class="card exercise-entry">
-                                <div><h3>{{ data.exercise_name }}</h3>
-                                    <p>{{ data.exercise_type }} | {{ data.intensity }}</p>
-                                </div>
-                                <div class="entry-stats">
-                                    <span>{{ data.weight_lifting_details.weight_kg }} kg</span>
-                                    <span>{{ data.weight_lifting_details.sets }} sets</span>
-                                    <span>{{ data.weight_lifting_details.reps }} reps</span>
-                                </div>
-                                <div class="item-actions">
-                                    
-                                    <a class="icon-btn" title="Delete"
-                                       href="{% url 'exercise:delete_workout' %}?exercise_id={{ data.id }}">
-                                        <svg viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        {% endif %}
-                        
-                    {% endfor %}
-                {% endif %}                                
                 
             </section>
         </main>

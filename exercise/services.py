@@ -2,6 +2,8 @@ import datetime
 
 import requests
 from django.conf import settings
+from django.db.models import Sum
+
 from .models import Exercise, Cardio, WeightLifting
 from user.models import UserData
 from . import exception
@@ -103,7 +105,6 @@ def delete_workout(request):
 
 
 def get_exercises_data(request):
-
     user_id = request.session.get('user_id')
     date = request.GET.get('date')
 
@@ -129,3 +130,16 @@ def get_exercises_data(request):
     )
 
     return exercise_data
+
+
+def get_header_data(request):
+    user_id = request.session.get('user_id')
+    date = request.GET.get('date')
+
+    total_duration = Exercise.objects.filter(user_id=user_id, log_date=date).aggregate(
+        Sum('cardio_details__duration_minutes'))
+    total_kcal_burn = Exercise.objects.filter(user_id=user_id, log_date=date).aggregate(Sum('kcal'))
+
+    header = {**total_duration, **total_kcal_burn}
+
+    return header

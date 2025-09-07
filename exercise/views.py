@@ -28,8 +28,10 @@ def delete_workout(request):
 def get_data_based_on_date(request):
     try:
         workout = services.get_exercises_data(request)
+        header = services.get_header_data(request)
         return JsonResponse(
-            {'workout': workout}
+            {'workout': workout, 'header': header}
+
         )
     except Exception as e:
         print(e)
