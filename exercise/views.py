@@ -27,8 +27,7 @@ def delete_workout(request):
 @login_required()
 def get_data_based_on_date(request):
     try:
-        workout = services.get_exercises_data(request)
-        header = services.get_header_data(request)
+        workout, header = services.get_workout_data(request)
         return JsonResponse(
             {'workout': workout, 'header': header}
 

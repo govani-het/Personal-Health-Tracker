@@ -104,42 +104,57 @@ def delete_workout(request):
     return True
 
 
-def get_exercises_data(request):
+def get_workout_data(request):
+
     user_id = request.session.get('user_id')
     date = request.GET.get('date')
 
-    exercise_data = list(
-        Exercise.objects.filter(
-            user_id=user_id,
-            log_date=date
-        ).values(
-            'id',
-            'log_date',
-            'exercise_type',
-            'exercise_name',
-            'intensity',
-            'kcal',
-
-            'cardio_details__duration_minutes',
-            'cardio_details__distance_km',
-
-            'weight_lifting_details__sets',
-            'weight_lifting_details__reps',
-            'weight_lifting_details__weight_kg'
-        )
+    exercises = Exercise.objects.filter(
+        user_id=user_id,
+        log_date=date
+    ).select_related(
+        'cardio_details',
+        'weight_lifting_details'
     )
 
-    return exercise_data
+    workout_data_list = []
+    total_duration_minutes = 0
+    total_kcal_burn = 0
+
+    for exercise in exercises:
+        workout_entry = {
+            'id': exercise.id,
+            'log_date': exercise.log_date,
+            'exercise_type': exercise.exercise_type,
+            'exercise_name': exercise.exercise_name,
+            'intensity': exercise.intensity,
+            'kcal': exercise.kcal,
+        }
+
+        if exercise.exercise_type == 'Cardio' and hasattr(exercise, 'cardio_details'):
+            workout_entry['cardio_details__duration_minutes'] = exercise.cardio_details.duration_minutes
+            workout_entry['cardio_details__distance_km'] = exercise.cardio_details.distance_km
+            total_duration_minutes += exercise.cardio_details.duration_minutes or 0
+        else:
+            workout_entry['cardio_details__duration_minutes'] = None
+            workout_entry['cardio_details__distance_km'] = None
+
+        if exercise.exercise_type == 'Weight Lifting' and hasattr(exercise, 'weight_lifting_details'):
+            workout_entry['weight_lifting_details__sets'] = exercise.weight_lifting_details.sets
+            workout_entry['weight_lifting_details__reps'] = exercise.weight_lifting_details.reps
+            workout_entry['weight_lifting_details__weight_kg'] = exercise.weight_lifting_details.weight_kg
+        else:
+            workout_entry['weight_lifting_details__sets'] = None
+            workout_entry['weight_lifting_details__reps'] = None
+            workout_entry['weight_lifting_details__weight_kg'] = None
+
+        total_kcal_burn += exercise.kcal or 0
+        workout_data_list.append(workout_entry)
 
 
-def get_header_data(request):
-    user_id = request.session.get('user_id')
-    date = request.GET.get('date')
+    header_data = {
+        'cardio_details__duration_minutes__sum': total_duration_minutes,
+        'kcal__sum': total_kcal_burn,
+    }
 
-    total_duration = Exercise.objects.filter(user_id=user_id, log_date=date).aggregate(
-        Sum('cardio_details__duration_minutes'))
-    total_kcal_burn = Exercise.objects.filter(user_id=user_id, log_date=date).aggregate(Sum('kcal'))
-
-    header = {**total_duration, **total_kcal_burn}
-
-    return header
+    return workout_data_list, header_data
