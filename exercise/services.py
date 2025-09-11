@@ -1,8 +1,6 @@
-import datetime
-
 import requests
 from django.conf import settings
-from django.db.models import Sum
+
 
 from .models import Exercise, Cardio, WeightLifting
 from user.models import UserData
@@ -105,7 +103,6 @@ def delete_workout(request):
 
 
 def get_workout_data(request):
-
     user_id = request.session.get('user_id')
     date = request.GET.get('date')
 
@@ -150,7 +147,6 @@ def get_workout_data(request):
 
         total_kcal_burn += exercise.kcal or 0
         workout_data_list.append(workout_entry)
-
 
     header_data = {
         'cardio_details__duration_minutes__sum': total_duration_minutes,
