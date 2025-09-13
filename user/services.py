@@ -1,16 +1,24 @@
 import os
 import random
+from datetime import date, timedelta
+from django.db.models import Sum
 
 from django.http import JsonResponse
 
 from . import exception
 import smtplib
 from .models import UserData, ProfileSetUp
+from exercise.models import Exercise
+from nutrition.models import UserNutritionData
+
+import plotly.graph_objects as go
+
 import bcrypt
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -168,3 +176,55 @@ def change_password(user_id, data):
     except Exception as e:
         print(e)
         return {'status': 'failed', 'message': 'An unexpected error occurred'}
+
+
+def line_chart(dates,burned_data, consumed_data):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=dates, y=burned_data, mode='lines+markers', name='Burned KCAL',
+        line=dict(color='skyblue', width=3), marker=dict(size=8, color='steelblue')
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=dates, y=consumed_data, mode='lines+markers', name='Consumed KCAL',
+        line=dict(color='gray', dash='dash', width=2)
+    ))
+
+    fig.update_layout(
+        title={'text': 'Burned & Consumed KCAL', 'font': {'size': 24, 'color': '#333'}, 'x': 0.5},
+        xaxis={'title': 'Date'}, yaxis={'title': 'KCAL'}, hovermode='x unified',
+        template='plotly_white', height=500, margin=dict(l=50, r=50, t=80, b=50),
+        font=dict(family='Arial', size=24, color='#7f7f7f'),
+    )
+    return fig
+
+
+def progress_view(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return None
+
+    today = date.today()
+    thirty_days_ago = today - timedelta(days=29)
+
+    exercise_entries = Exercise.objects.filter(
+        user_id=user_id,
+        log_date__gte=thirty_days_ago).values('log_date').annotate(total_kcal=Sum('kcal')).order_by('log_date')
+
+    nutrition_entries = UserNutritionData.objects.filter(
+        user_id=user_id,
+        meal_date__gte=thirty_days_ago).values('meal_date').annotate(total_kcal=Sum('kcal')).order_by('meal_date')
+
+    daily_burn_kcal_total = {entry['log_date']: entry['total_kcal'] for entry in exercise_entries}
+
+    daily_consumed_kcal_total = {entry['meal_date']: entry['total_kcal'] for entry in nutrition_entries}
+
+    all_dates_in_period = [thirty_days_ago + timedelta(days=i) for i in range(30)]
+
+    burn_kcal_chart = [daily_burn_kcal_total.get(d, 0) for d in all_dates_in_period]
+
+    consume_kcal_chart = [daily_consumed_kcal_total.get(d, 0) for d in all_dates_in_period]
+
+    chart = line_chart(all_dates_in_period, burn_kcal_chart,consume_kcal_chart)
+
+    return chart

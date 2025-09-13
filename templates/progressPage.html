@@ -23,45 +23,20 @@
                     <h2>Track Your Progress</h2>
                     <p>Visualize your journey and see how far you've come.</p>
                 </div>
-                <div class="header-actions">
-                    <input type="text" placeholder="Search...">
-                    <button class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
-                </div>
+
             </header>
 
             <!-- Chart Section -->
             <section class="card chart-container">
                 <div class="chart-header">
-                    <h4>Weight History</h4>
-                    <div class="chart-filters">
-                        <button class="filter-btn active">30 Days</button>
-                    </div>
+                    <h4>Kcal History</h4>
+
                 </div>
-                <div class="chart-wrapper">
-                    <canvas id="progressChart"></canvas>
+                <div class="chart-wrapper" style="width: 1170px">
+                    {{ progress_chart }}
                 </div>
             </section>
 
-            <!-- Data Table Section -->
-            <section class="card table-container">
-                <h4>Weight & Calorie Log</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-
-                            <th>Net Kcal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>June 17, 2024</td><td class="negative-change">-350 kcal</td></tr>
-                        <tr><td>June 16, 2024</td><td class="positive-change">+150 kcal</td></tr>
-                        <tr><td>June 15, 2024</td><td class="negative-change">-400 kcal</td></tr>
-                        <tr><td>June 14, 2024</td><td class="negative-change">-550 kcal</td></tr>
-
-                    </tbody>
-                </table>
-            </section>
         </main>
     </div>
 

@@ -2,6 +2,8 @@ import json
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.utils.safestring import mark_safe
+
 from . import services
 
 from django.views.decorators.cache import never_cache
@@ -29,7 +31,17 @@ def index(request):
 @never_cache
 @login_required()
 def load_progress_page(request):
-    return render(request, 'progressPage.html')
+
+    progress_chart = services.progress_view(request)
+
+    progress_chart_html = progress_chart.to_html(
+        full_html=False,
+        include_plotlyjs='cdn')
+
+    context = {
+        'progress_chart': mark_safe(progress_chart_html)
+    }
+    return render(request, 'progressPage.html', context)
 
 
 @never_cache

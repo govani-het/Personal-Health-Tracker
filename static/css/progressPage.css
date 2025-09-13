@@ -53,7 +53,7 @@ body { font-family: var(--font-family); background-color: var(--main-bg); }
     color: #fff;
     border-color: var(--accent-blue);
 }
-.chart-wrapper { height: 350px; }
+.chart-wrapper { height: 500px; }
 
 /* --- TABLE CONTAINER STYLES --- */
 .table-container h4 { font-size: 1.1rem; margin-bottom: 20px; }
