@@ -4,6 +4,7 @@ from datetime import date, timedelta
 from django.db.models import Sum
 
 from django.http import JsonResponse
+from django.core.cache import cache
 
 from . import exception
 import smtplib
@@ -178,7 +179,7 @@ def change_password(user_id, data):
         return {'status': 'failed', 'message': 'An unexpected error occurred'}
 
 
-def line_chart(dates,burned_data, consumed_data):
+def line_chart(dates, burned_data, consumed_data):
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=dates, y=burned_data, mode='lines+markers', name='Burned KCAL',
@@ -204,7 +205,16 @@ def progress_view(request):
     if not user_id:
         return None
 
+
     today = date.today()
+
+    cache_key = f"charts:progress_view:{user_id}:{today.isoformat()}"
+
+    charts = cache.get(cache_key)
+
+    if charts is not None:
+        return charts
+
     thirty_days_ago = today - timedelta(days=29)
 
     exercise_entries = Exercise.objects.filter(
@@ -225,6 +235,8 @@ def progress_view(request):
 
     consume_kcal_chart = [daily_consumed_kcal_total.get(d, 0) for d in all_dates_in_period]
 
-    chart = line_chart(all_dates_in_period, burn_kcal_chart,consume_kcal_chart)
+    chart = line_chart(all_dates_in_period, burn_kcal_chart, consume_kcal_chart)
+
+    cache.set(cache_key, chart,timeout=60*60*24)
 
     return chart

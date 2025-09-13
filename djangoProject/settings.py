@@ -2,7 +2,11 @@
 
 from pathlib import Path
 import os
+
+from django.core.cache.backends.redis import RedisCache
 from dotenv import load_dotenv
+from celery.schedules import crontab
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -117,11 +121,19 @@ USE_L10N = True
 USE_TZ = True
 
 
-from celery.schedules import crontab
-
 CELERYBEAT_SCHEDULE = {
     'check_all_reminders_job': {
         'task': 'reminders.tasks.check_due_reminder',
         'schedule': crontab(),
+    }
+}
+
+CACHES = {
+    "default" : {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }

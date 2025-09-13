@@ -116,9 +116,9 @@ def change_password(request):
         try:
             user_id = request.session.get('user_id')
             data = json.loads(request.body)
-            response = services.change_password(user_id,data)
+            response = services.change_password(user_id, data)
 
-            return JsonResponse(response,status=200)
+            return JsonResponse(response, status=200)
 
         except Exception as e:
             print(e)
