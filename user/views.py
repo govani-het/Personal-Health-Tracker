@@ -31,18 +31,20 @@ def index(request):
 @never_cache
 @login_required()
 def load_progress_page(request):
+    try:
+        progress_chart = services.progress_view(request)
 
-    progress_chart = services.progress_view(request)
+        progress_chart_html = progress_chart.to_html(
+            full_html=False,
+            include_plotlyjs='cdn')
 
-    progress_chart_html = progress_chart.to_html(
-        full_html=False,
-        include_plotlyjs='cdn')
-
-    context = {
-        'progress_chart': mark_safe(progress_chart_html)
-    }
-    return render(request, 'progressPage.html', context)
-
+        context = {
+            'progress_chart': mark_safe(progress_chart_html)
+        }
+        return render(request, 'progressPage.html', context)
+    except Exception as e:
+        messages.error('An error occured while loading the progress page.', e)
+        return redirect('/index')
 
 @never_cache
 @login_required()
@@ -70,11 +72,18 @@ def load_setting_page(request):
 def create_user(request):
     if request.method == "POST":
         try:
-            services.create_user(request)
-            return redirect('/')
+            response = services.create_user(request)
+
+            if response.get('success'):
+                return redirect('/')
+            else:
+                messages.error(request, response.get('message'))
+                return redirect('/register')
         except ValueError as e:
             messages.error(request, str(e))
-
+            return redirect('/register')
+        except Exception as e:
+            messages.error(request, "Something went wrong, Please try again.")
             return redirect('/register')
     else:
         return redirect('/register')
@@ -88,6 +97,7 @@ def user_profile_setup(request):
             services.profile_setup(request)
             return redirect('user:index')
         except services.exception.ProfileSetUpAlreadyExists as e:
+            messages.error(request, "Profile setup already exists")
             return render(request, 'index.html')
 
 
@@ -95,7 +105,6 @@ def user_profile_setup(request):
 def update_user_profile(request):
     if request.method != 'POST':
         return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
-
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
@@ -113,15 +122,20 @@ def update_user_profile(request):
 @login_required()
 def change_password(request):
     if request.method == "POST":
+        user_id = request.session.get('user_id')
         try:
-            user_id = request.session.get('user_id')
             data = json.loads(request.body)
-            response = services.change_password(user_id, data)
 
-            return JsonResponse(response, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'message': 'Invalid JSON format in request body.'}, status=400)
 
         except Exception as e:
-            print(e)
-            return JsonResponse({'success': False, 'message': 'Current Password Is Wrong'}, status=400)
+            return JsonResponse({'success': False, 'message': 'Failed to process request body.'}, status=400)
 
+        response = services.change_password(user_id, data)
+
+        if response['success']:
+            return JsonResponse(response, status=200)
+        else:
+            return JsonResponse(response, status=400)
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)

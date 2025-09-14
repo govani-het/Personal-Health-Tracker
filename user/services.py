@@ -28,13 +28,12 @@ def create_user(request):
     password = request.POST['password']
     email = email.lower()
     if UserData.objects.filter(email=email).exists():
-        raise ValueError("Email already registered")
+        return {'success': False, 'message': 'Email already registered'}
     else:
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(rounds=12)).decode('utf-8')
-
         user = UserData(email=email, password=hashed_password)
         user.save()
-
+        return {'success': True}
 
 def authenticate_user(request):
     email = request.POST['email']
@@ -157,11 +156,14 @@ def update_password(request, data):
 
 def change_password(user_id, data):
     try:
-        current_password = data.get('password')
-        new_password = data.get('newPassword')
+        current_password = data.get('password').strip()
+        new_password = data.get('newPassword').strip()
 
         if not current_password or not new_password:
             return {'success': False, 'message': 'Missing password fields.'}
+
+        if current_password == new_password:
+            return {'success': False, 'message': 'New password cannot be the same as the current password.'}
 
         hash_password = UserData.objects.get(user_id=user_id).password
 
@@ -176,7 +178,7 @@ def change_password(user_id, data):
         return {'success': False, 'message': 'User not found.'}
     except Exception as e:
         print(e)
-        return {'status': 'failed', 'message': 'An unexpected error occurred'}
+        return {'status': False, 'message': 'An unexpected error occurred'}
 
 
 def line_chart(dates, burned_data, consumed_data):
