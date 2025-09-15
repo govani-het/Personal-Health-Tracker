@@ -37,7 +37,14 @@ document.addEventListener("DOMContentLoaded", function() {
 async function update_data(){
     const date = document.getElementById('current-date').value
     const mealLog = document.querySelector('.meal-log')
-    const daily_summery = document.querySelector('.daily-summary')
+    const today = new Date().toISOString().split("T")[0];
+
+    if (date !== today){
+        document.getElementById('add-meal').style.display = 'none'
+    }else {
+        document.getElementById('add-meal').style.display = 'block';
+    }
+
 
     mealLog.innerHTML='';
 
@@ -67,50 +74,75 @@ async function update_data(){
 
     const response = await fetch(`/nutrition/api/get_data_based_on_date/?date=${date}`)
 
+
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data =await response.json()
 
-    console.log("Data received from backend:", data);
+    if ((!data.meals || data.meals.length === 0) &&
+        data.summary === null &&
+        data.percentages === null) {
 
-    summary.calories.value.textContent = `${data.summary[0].toFixed(2)} /2000`;
-    summary.calories.progress.style.setProperty('--p', data.percentages[0]);
+            summary.calories.value.textContent = `0 /2000`;
+            summary.calories.progress.style.setProperty('--p', 0);
 
-    summary.protein.value.textContent = `${data.summary[1].toFixed(2)}/150`;
-    summary.protein.progress.style.setProperty('--p', data.percentages[1]);
+            summary.protein.value.textContent = `0/150`;
+            summary.protein.progress.style.setProperty('--p', 0);
 
-    summary.carbs.value.textContent = `${data.summary[2].toFixed(2)}/250`;
-    summary.carbs.progress.style.setProperty('--p', data.percentages[2]);
+            summary.carbs.value.textContent = `0/250`;
+            summary.carbs.progress.style.setProperty('--p', 0);
 
-    summary.fats.value.textContent = `${data.summary[3].toFixed(2)}/70`;
-    summary.fats.progress.style.setProperty('--p', data.percentages[3]);
+            summary.fats.value.textContent = `0/70`;
+            summary.fats.progress.style.setProperty('--p', 0);
 
-    document.getElementById('add-meal').style.display = 'none'
+            document.getElementById('message').textContent = "No data available";
+    }else {
 
-    data.meals.forEach(meal => {
-        const mealLogHTML = `
-            <div class="card meal-group">
-                <h4>${meal.meal_type}</h4>
-        
-                <div class="meal-item">
-                    <div>
-                        <h5>${meal.food_name}</h5>
-                        <p>${meal.food_quantity} | ${meal.kcal} kcal</p>
-                    </div>
-                    <div class="meal-macros">
-                        <span title="Protein">P: ${meal.protein || 0}g</span>
-                        <span title="Carbs">C: ${meal.carbs || 0}g</span>
-                        <span title="Fats">F: ${meal.fats || 0}g</span>
-                    </div>
-                    <div class="item-actions">
-                    
+        document.getElementById('message').textContent = "";
+        summary.calories.value.textContent = `${data.summary[0].toFixed(2)} /2000`;
+        summary.calories.progress.style.setProperty('--p', data.percentages[0]);
+
+        summary.protein.value.textContent = `${data.summary[1].toFixed(2)}/150`;
+        summary.protein.progress.style.setProperty('--p', data.percentages[1]);
+
+        summary.carbs.value.textContent = `${data.summary[2].toFixed(2)}/250`;
+        summary.carbs.progress.style.setProperty('--p', data.percentages[2]);
+
+        summary.fats.value.textContent = `${data.summary[3].toFixed(2)}/70`;
+        summary.fats.progress.style.setProperty('--p', data.percentages[3]);
+
+
+
+        data.meals.forEach(meal => {
+            const mealLogHTML = `
+                <div class="card meal-group">
+                    <h4>${meal.meal_type}</h4>
+            
+                    <div class="meal-item">
+                        <div>
+                            <h5>${meal.food_name}</h5>
+                            <p>${meal.food_quantity} | ${meal.kcal} kcal</p>
+                        </div>
+                        <div class="meal-macros">
+                            <span title="Protein">P: ${meal.protein || 0}g</span>
+                            <span title="Carbs">C: ${meal.carbs || 0}g</span>
+                            <span title="Fats">F: ${meal.fats || 0}g</span>
+                        </div>
+                        <div class="item-actions">
+                            <a class="icon-btn" title="Delete"
+                               href="${deleteMealUrl}?meal_id=${ meal.id }">
+                                <svg viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                          d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
-        mealLog.innerHTML += mealLogHTML;
-    });
-
+            `;
+            mealLog.innerHTML += mealLogHTML;
+        });
+      }
 }
 

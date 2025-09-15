@@ -46,11 +46,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 async function update_data() {
+
     const date = document.getElementById('current-date').value
     const exercise_log = document.querySelector('.exercise-log')
 
     const duration = document.getElementById('duration')
     const kcal_burn = document.getElementById('kcal_burn')
+
+    const today = new Date().toISOString().split("T")[0];
+
+    if (date !== today){
+        document.getElementById('add-exercise').style.display = 'none';
+    }else {
+        document.getElementById('add-exercise').style.display = 'block';
+    }
 
     exercise_log.innerHTML='';
 
@@ -59,8 +68,9 @@ async function update_data() {
     if (!response.ok){
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const data =await response.json()
 
+    const data =await response.json()
+    console.log(data)
 
     duration.textContent = (data.header.cardio_details__duration_minutes__sum ?? 0) + " Min"
     kcal_burn.textContent = (data.header.kcal__sum ?? 0)
